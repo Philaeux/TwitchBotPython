@@ -34,10 +34,13 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
             return
         else:
             split = message[1:].split(' ', 1)
-            answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
+            if split[0] not in self.commands:
+                return
+            else:
+                answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
 
-            for line in answer or []:
-                chat.privmsg(self.channel, line)
+                for line in answer or []:
+                    chat.privmsg(self.channel, line)
 
     @staticmethod
     def grenouille(is_admin=False, parameters=None):
