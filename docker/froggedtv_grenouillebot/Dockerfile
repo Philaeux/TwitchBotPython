@@ -9,6 +9,6 @@ RUN apt-get -y install python3-pip
 RUN pip3 install \
     irc
 
-ENV PYTHONPATH $PYTHONPATH:/froggedtv_junabot
+ENV PYTHONPATH $PYTHONPATH:/froggedtv_grenouillebot
 
-COPY . /froggedtv_junabot/
+COPY . /froggedtv_grenouillebot/

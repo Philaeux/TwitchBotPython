@@ -1,2 +1,2 @@
-# froggedtv_junabot
+# GrenouilleBot
 Twitch chat bot for FroggedTV.
