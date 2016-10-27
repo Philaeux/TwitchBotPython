@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  froggedtv_junabot:
+    image: froggedtv_junabot
+    container_name: "froggedtv_junabot"
+    restart: always
+    build:
+      context: ..
+      dockerfile: docker/froggedtv_junabot/Dockerfile
+    entrypoint: python3 /froggedtv_junabot/bot/bot_application.py
