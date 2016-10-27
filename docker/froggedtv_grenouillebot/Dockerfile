@@ -7,7 +7,8 @@ RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install python3-pip
 
 RUN pip3 install \
-    irc
+    irc \
+    google-api-python-client
 
 ENV PYTHONPATH $PYTHONPATH:/froggedtv_grenouillebot
 

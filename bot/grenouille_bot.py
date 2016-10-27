@@ -2,11 +2,21 @@ import logging
 
 import irc.bot
 import irc.strings
+from datetime import datetime, timezone
 
 
 class GrenouilleBot(irc.bot.SingleServerIRCBot):
 
-    def __init__(self, channel, nickname, server, port=6667, password=None):
+    def __init__(self, config, event_list):
+        self.config = config
+        self.event_list = event_list
+
+        channel = config['DEFAULT']['channel']
+        nickname = config['DEFAULT']['nickname']
+        server = 'irc.twitch.tv'
+        password = config['DEFAULT']['token']
+        port = 6667
+
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
 
@@ -14,6 +24,8 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
         self.commands = {
             'greaide': self.greaide,
             'grenouille': self.grenouille,
+            'next': self.next,
+            'now': self.now,
             'who': self.who
         }
 
@@ -21,6 +33,7 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
         chat.join(self.channel)
         chat.set_rate_limit(0.5)
         chat.send_raw('CAP REQ :twitch.tv/tags')
+        logging.info('GrenouilleBot Ready')
 
     def on_pubmsg(self, chat, e):
         message = e.arguments[0]
@@ -56,7 +69,38 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
 
         :return:
         """
-        return ["Commandes de la grenouille: 'greaide', 'grenouille', 'who'"]
+        return ["Commandes de la grenouille: 'greaide', 'grenouille', 'next', 'now', 'who'"]
+
+    def next(self, is_admin=False, parameters=None):
+        """Return the next event from the calendar.
+
+        :return:
+        """
+        now = datetime.now(timezone.utc)
+        while self.event_list and self.event_list[0].end < now:
+            self.event_list.pop(0)
+        if len(self.event_list) == 0:
+            return ['Aucun événement planifié dans le calendrier.']
+        else:
+            if self.event_list[0].start > now:
+                return [str(self.event_list[0])]
+            else:
+                return [str(self.event_list[1])]
+
+    def now(self, is_admin=False, parameters=None):
+        """Return the current event from the calendar.
+
+        :return:
+        """
+        now = datetime.now(timezone.utc)
+        while self.event_list and self.event_list[0].end < now:
+            self.event_list.pop(0)
+        if len(self.event_list) == 0:
+            return ['Aucun événement planifié dans le calendrier.']
+        elif self.event_list[0].start < now < self.event_list[0].end:
+            return [str(self.event_list[0])]
+        else:
+            return ["Aucune information dans le calendrier pour l'événement actuel."]
 
     def who(self, is_admin=False, parameters=None):
         """Display current streamers.
@@ -68,3 +112,5 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
         if is_admin and parameters is not None:
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
+
+
