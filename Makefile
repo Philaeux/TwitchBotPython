@@ -1,7 +1,7 @@
 # stop all running dockers
 all-stop:
-	-docker stop froggedtv_grenouillebot
-	-docker rm froggedtv_grenouillebot
+	-docker stop grenouillebot
+	-docker rm grenouillebot
 
 # start all
 all-start:
@@ -9,7 +9,7 @@ all-start:
 
 # start bot
 bot-start:
-	docker-compose -f docker/docker-compose.yml up --build froggedtv_grenouillebot
+	docker-compose -f docker/docker-compose.yml up --build grenouillebot
 
 # build
 build:

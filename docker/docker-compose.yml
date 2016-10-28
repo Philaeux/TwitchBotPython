@@ -1,11 +1,11 @@
 version: "2"
 
 services:
-  froggedtv_grenouillebot:
-    image: froggedtv_grenouillebot
-    container_name: "froggedtv_grenouillebot"
+  grenouillebot:
+    image: grenouillebot
+    container_name: "grenouillebot"
     restart: always
     build:
       context: ..
-      dockerfile: docker/froggedtv_grenouillebot/Dockerfile
-    entrypoint: python3 /froggedtv_grenouillebot/bot/bot_application.py
+      dockerfile: docker/grenouillebot/Dockerfile
+    entrypoint: python3 /grenouillebot/bot/bot_application.py

@@ -10,6 +10,6 @@ RUN pip3 install \
     irc \
     google-api-python-client
 
-ENV PYTHONPATH $PYTHONPATH:/froggedtv_grenouillebot
+ENV PYTHONPATH $PYTHONPATH:/grenouillebot
 
-COPY . /froggedtv_grenouillebot/
+COPY . /grenouillebot/

@@ -1,24 +1,30 @@
 import logging
+import sys
 
 import irc.bot
 import irc.strings
 from datetime import datetime, timezone
 
 
-class GrenouilleBot(irc.bot.SingleServerIRCBot):
+class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
+    """The part of the bot responsible for the Twitch (IRC) chat.
+    Listen to all pub messages and respond accordingly.
 
-    def __init__(self, config, event_list):
-        self.config = config
-        self.event_list = event_list
+    Attributes
+        grenouille_bot - The main class the irc bot is linked to.
 
-        channel = config['DEFAULT']['channel']
-        nickname = config['DEFAULT']['nickname']
+        commands - list of all commands supported by the bot
+        who_data - streamer names displayed by who
+    """
+
+    def __init__(self, grenouille_bot):
+        self.grenouille_bot = grenouille_bot
+
+        channel = self.grenouille_bot.config['DEFAULT']['channel']
+        nickname = self.grenouille_bot.config['DEFAULT']['nickname']
         server = 'irc.twitch.tv'
-        password = config['DEFAULT']['token']
+        password = self.grenouille_bot.config['DEFAULT']['token']
         port = 6667
-
-        irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
-        self.channel = channel
 
         self.who_data = 'Aucune info sur le streamer actuel.'
         self.commands = {
@@ -29,13 +35,27 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
             'who': self.who
         }
 
-    def on_welcome(self, chat, e):
-        chat.join(self.channel)
-        chat.set_rate_limit(0.5)
-        chat.send_raw('CAP REQ :twitch.tv/tags')
+        irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
+        self.channel = channel
+
+    def on_welcome(self, connection, e):
+        """Called when the bot is connected to the IRC server.
+        """
+        connection.join(self.channel)
+        connection.set_rate_limit(0.5)
+        connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('GrenouilleBot Ready')
 
-    def on_pubmsg(self, chat, e):
+    def _on_disconnect(self, connection, e):
+        """Called when the bot is disconnected from the IRC server.
+        """
+        self.grenouille_bot.stop()
+        sys.exit(0)
+
+    def on_pubmsg(self, connection, e):
+        """Called for every public message.
+        Extract command, call it with admin info.
+        """
         message = e.arguments[0]
         sender = e.source.nick
         tags = {key_value["key"]: key_value["value"] for key_value in e.tags}
@@ -43,7 +63,7 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
 
         if not message[0] == '!':
             return
-        elif sender == chat.get_nickname():
+        elif sender == connection.get_nickname():
             return
         else:
             split = message[1:].split(' ', 1)
@@ -53,7 +73,11 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
                 answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
 
                 for line in answer or []:
-                    chat.privmsg(self.channel, line)
+                    connection.privmsg(self.channel, line)
+
+    ######################################
+    # Methods linked to the bot commands #
+    ######################################
 
     @staticmethod
     def grenouille(is_admin=False, parameters=None):
@@ -72,37 +96,37 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
         return ["Commandes de la grenouille: 'greaide', 'grenouille', 'next', 'now', 'who'"]
 
     def next(self, is_admin=False, parameters=None):
-        """Return the next event from the calendar.
+        """Display the next event from the calendar.
 
         :return:
         """
         try:
             now = datetime.now(timezone.utc)
-            while self.event_list and self.event_list[0].end < now:
-                self.event_list.pop(0)
-            if len(self.event_list) == 0:
+            while self.grenouille_bot.event_list and self.grenouille_bot.event_list[0].end < now:
+                self.grenouille_bot.event_list.pop(0)
+            if len(self.grenouille_bot.event_list) == 0:
                 return ['Aucun événement planifié dans le calendrier.']
             else:
-                if self.event_list[0].start > now:
-                    return [str(self.event_list[0])]
+                if self.grenouille_bot.event_list[0].start > now:
+                    return [str(self.grenouille_bot.event_list[0])]
                 else:
-                    return [str(self.event_list[1])]
+                    return [str(self.grenouille_bot.event_list[1])]
         except Exception:
             logging.exception('Error when next.')
 
     def now(self, is_admin=False, parameters=None):
-        """Return the current event from the calendar.
+        """Display the current event from the calendar.
 
         :return:
         """
         try:
             now = datetime.now(timezone.utc)
-            while self.event_list and self.event_list[0].end < now:
-                self.event_list.pop(0)
-            if len(self.event_list) == 0:
+            while self.grenouille_bot.event_list and self.grenouille_bot.event_list[0].end < now:
+                self.grenouille_bot.event_list.pop(0)
+            if len(self.grenouille_bot.event_list) == 0:
                 return ['Aucun événement planifié dans le calendrier.']
-            elif self.event_list[0].start < now < self.event_list[0].end:
-                return [str(self.event_list[0])]
+            elif self.grenouille_bot.event_list[0].start < now < self.grenouille_bot.event_list[0].end:
+                return [str(self.grenouille_bot.event_list[0])]
             else:
                 return ["Aucune information dans le calendrier pour l'événement actuel."]
         except Exception:
@@ -118,5 +142,3 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
         if is_admin and parameters is not None:
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
-
-
