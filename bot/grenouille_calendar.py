@@ -25,7 +25,7 @@ class Event:
         result = ''
         if days.days > 0:
             result = 'J+{0} '.format(days)
-        return '{0}{1}-{2} {3}'.format(result, self.start.strftime("%H:%M"), self.end.strftime("%H:%M"), self.summary)
+        return '{0}{1} - {2} {3}'.format(result, self.start.strftime("%H:%M"), self.end.strftime("%H:%M"), self.summary)
 
 
 class GrenouilleCalendar:
