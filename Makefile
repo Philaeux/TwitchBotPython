@@ -5,12 +5,12 @@ all-stop:
 
 # start all
 all-start:
-	docker-compose -f docker/docker-compose.yml up -d --build
+	docker-compose -p grenouillebot -f docker/docker-compose.yml up -d --build
 
 # start bot
 bot-start:
-	docker-compose -f docker/docker-compose.yml up --build grenouillebot
+	docker-compose -p grenouillebot -f docker/docker-compose.yml up --build grenouillebot
 
 # build
 build:
-	docker-compose -f docker/docker-compose.yml build
+	docker-compose -p grenouillebot -f docker/docker-compose.yml build
