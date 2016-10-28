@@ -1,2 +1,2 @@
 #pattern  filter=crypt diff=crypt
-common/settings.ini filter=crypt diff=crypt
+bot/settings.ini filter=crypt diff=crypt
