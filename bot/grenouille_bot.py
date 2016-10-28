@@ -76,31 +76,37 @@ class GrenouilleBot(irc.bot.SingleServerIRCBot):
 
         :return:
         """
-        now = datetime.now(timezone.utc)
-        while self.event_list and self.event_list[0].end < now:
-            self.event_list.pop(0)
-        if len(self.event_list) == 0:
-            return ['Aucun événement planifié dans le calendrier.']
-        else:
-            if self.event_list[0].start > now:
-                return [str(self.event_list[0])]
+        try:
+            now = datetime.now(timezone.utc)
+            while self.event_list and self.event_list[0].end < now:
+                self.event_list.pop(0)
+            if len(self.event_list) == 0:
+                return ['Aucun événement planifié dans le calendrier.']
             else:
-                return [str(self.event_list[1])]
+                if self.event_list[0].start > now:
+                    return [str(self.event_list[0])]
+                else:
+                    return [str(self.event_list[1])]
+        except Exception:
+            logging.exception('Error when next.')
 
     def now(self, is_admin=False, parameters=None):
         """Return the current event from the calendar.
 
         :return:
         """
-        now = datetime.now(timezone.utc)
-        while self.event_list and self.event_list[0].end < now:
-            self.event_list.pop(0)
-        if len(self.event_list) == 0:
-            return ['Aucun événement planifié dans le calendrier.']
-        elif self.event_list[0].start < now < self.event_list[0].end:
-            return [str(self.event_list[0])]
-        else:
-            return ["Aucune information dans le calendrier pour l'événement actuel."]
+        try:
+            now = datetime.now(timezone.utc)
+            while self.event_list and self.event_list[0].end < now:
+                self.event_list.pop(0)
+            if len(self.event_list) == 0:
+                return ['Aucun événement planifié dans le calendrier.']
+            elif self.event_list[0].start < now < self.event_list[0].end:
+                return [str(self.event_list[0])]
+            else:
+                return ["Aucune information dans le calendrier pour l'événement actuel."]
+        except Exception:
+            logging.exception('Error when now.')
 
     def who(self, is_admin=False, parameters=None):
         """Display current streamers.

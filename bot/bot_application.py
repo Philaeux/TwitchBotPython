@@ -18,7 +18,7 @@ except Exception:
     exit(1)
 
 # Log
-logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.WARNING)
+logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.INFO)
 
 # Calendar refresh
 service = discovery.build('calendar', 'v3', developerKey=config['DEFAULT']['calendar_key'], cache_discovery=False)
