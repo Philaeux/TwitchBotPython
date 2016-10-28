@@ -7,11 +7,11 @@ from datetime import datetime, timezone
 
 
 class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
-    """The part of the bot responsible for the Twitch (IRC) chat.
+    """The module of the bot responsible for the Twitch (IRC) chat.
     Listen to all pub messages and respond accordingly.
 
     Attributes
-        grenouille_bot - The main class the irc bot is linked to.
+        grenouille_bot - The main class the module is linked to.
 
         commands - list of all commands supported by the bot
         who_data - streamer names displayed by who
