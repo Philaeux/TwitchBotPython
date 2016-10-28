@@ -28,7 +28,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         self.who_data = 'Aucune info sur le streamer actuel.'
         self.commands = {
-            'greaide': self.greaide,
             'grenouille': self.grenouille,
             'next': self.next,
             'now': self.now,
@@ -79,21 +78,12 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
     # Methods linked to the bot commands #
     ######################################
 
-    @staticmethod
-    def grenouille(is_admin=False, parameters=None):
-        """Presentation message of the bot.
-
-        :return:
-        """
-        return ["Bonjour, je suis GrenouilleBot. Mon maître m'a demandé de vous servir."]
-
-    @staticmethod
-    def greaide(is_admin=False, parameters=None):
+    def grenouille(self, is_admin=False, parameters=None):
         """List all bot commands
 
         :return:
         """
-        return ["Commandes de la grenouille: 'greaide', 'grenouille', 'next', 'now', 'who'"]
+        return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(self.commands.keys())))]
 
     def next(self, is_admin=False, parameters=None):
         """Display the next event from the calendar.
@@ -113,6 +103,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                     return [str(self.grenouille_bot.event_list[1])]
         except Exception:
             logging.exception('Error when next.')
+            return ['Erreur interne à la grenouille.']
 
     def now(self, is_admin=False, parameters=None):
         """Display the current event from the calendar.
@@ -131,6 +122,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                 return ["Aucune information dans le calendrier pour l'événement actuel."]
         except Exception:
             logging.exception('Error when now.')
+            return ['Erreur interne à la grenouille.']
 
     def who(self, is_admin=False, parameters=None):
         """Display current streamers.
