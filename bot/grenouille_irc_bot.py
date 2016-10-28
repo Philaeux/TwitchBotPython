@@ -58,7 +58,9 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         message = e.arguments[0]
         sender = e.source.nick
         tags = {key_value["key"]: key_value["value"] for key_value in e.tags}
-        is_admin = bool(tags['user-type'])
+        is_admin = False
+        if 'user-type' in tags:
+            is_admin = bool(tags['user-type'])
 
         if not message[0] == '!':
             return

@@ -1,5 +1,5 @@
 import threading
-from datetime import datetime
+from datetime import datetime, timezone
 from apiclient import discovery
 
 
@@ -20,7 +20,12 @@ class Event:
     def __str__(self):
         """How the event will be displayed in chat.
         """
-        return '{0} - {1} {2}'.format(self.start.strftime("%H:%M"), self.end.strftime("%H:%M"), self.summary)
+        now = datetime.now(timezone.utc)
+        days = self.start - now
+        result = ''
+        if days.days > 0:
+            result = 'J+{0} '.format(days)
+        return '{0}{1}-{2} {3}'.format(result, self.start.strftime("%H:%M"), self.end.strftime("%H:%M"), self.summary)
 
 
 class GrenouilleCalendar:
