@@ -49,8 +49,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """Called when the bot is disconnected from the IRC server.
         """
         logging.error('Grenouille IRC Bot Disconnected !!!!')
-        self.grenouille_bot.stop()
-        sys.exit(0)
 
     def on_pubmsg(self, connection, e):
         """Called for every public message.
