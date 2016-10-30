@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<twitters>
+    <twitter name="hugo">https://twitter.com/HugoDota</twitter>
+    <twitter name="luciqno">https://twitter.com/LuCiqNo</twitter>
+    <twitter name="namax" alias="max">https://twitter.com/NamaxDota</twitter>
+    <twitter name="philaeux">https://twitter.com/Philaeux</twitter>
+    <twitter name="shiba">https://twitter.com/shibounet</twitter>
+    <twitter name="thibault">https://twitter.com/ThibaultVlacich</twitter>
+    <twitter name="voja" alias="v0ja">https://twitter.com/v0jaDota</twitter>
+    <twitter name="youyou" alias="yoµyoµ">https://twitter.com/YouYouDota</twitter>
+</twitters>
