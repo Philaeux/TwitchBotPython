@@ -1,10 +1,12 @@
 import logging
 import sys
+import os
 
 import irc.bot
 import irc.strings
 from datetime import datetime, timezone
 
+import xml.etree.ElementTree
 
 class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
     """The module of the bot responsible for the Twitch (IRC) chat.
@@ -32,11 +34,14 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             'next': self.next,
             'now': self.now,
             'who': self.who,
-            'youtube': self.youtube
+            'youtube': self.youtube,
+            'twitter': self.twitter
         }
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
+
+        self.twitters = xml.etree.ElementTree.parse(os.path.join(os.path.dirname(__file__), 'twitters.xml')).getroot()
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server.
@@ -138,4 +143,30 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         return [self.who_data]
     
     def youtube(self, is_admin=False, parameters=None):
+        """Print the youtube official channel of the FroggedTV
+
+        :param parameters useless in this function
+        :return: Youtube of the FroggedTV
+        """
         return ['Le YouTube de la FroggedTV : https://www.youtube.com/FroggedTV']
+
+    def twitter(self, is_admin=False, parameters=None):
+        """Display the Twitter account of the asked streamer.
+
+        :param parameters name of the streamer
+        :return:
+        """
+        if parameters is not None:
+            twitter = self.twitters.find('.//twitter[@name="{0}"]'.format(parameters.lower()))
+
+            if twitter is not None:
+                return [twitter.text]
+            else:
+                twitter = self.twitters.find('.//twitter[@alias="{0}"]'.format(parameters.lower()))
+
+                if twitter is not None:
+                    return [twitter.text]
+                else:
+                    return []
+        else:
+            return ['Format de la commande : !twitter [nom du streamer]']

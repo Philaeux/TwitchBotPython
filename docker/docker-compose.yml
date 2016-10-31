@@ -4,7 +4,6 @@ services:
   grenouillebot:
     image: grenouillebot
     container_name: "grenouillebot"
-    restart: always
     build:
       context: ..
       dockerfile: docker/grenouillebot/Dockerfile
