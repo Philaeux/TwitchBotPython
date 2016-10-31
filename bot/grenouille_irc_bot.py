@@ -31,7 +31,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             'grenouille': self.grenouille,
             'next': self.next,
             'now': self.now,
-            'who': self.who
+            'who': self.who,
+            'youtube': self.youtube
         }
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
@@ -135,3 +136,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         if is_admin and parameters is not None:
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
+    
+    def youtube(self, is_admin=False, parameters=None):
+        return ['Le YouTube de la FroggedTV : https://www.youtube.com/FroggedTV']
