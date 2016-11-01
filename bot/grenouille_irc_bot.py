@@ -2,11 +2,14 @@ import logging
 import sys
 import os
 
+from time import sleep
 import irc.bot
 import irc.strings
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+import threading
 
 import xml.etree.ElementTree
+
 
 class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
     """The module of the bot responsible for the Twitch (IRC) chat.
@@ -15,6 +18,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
     Attributes
         grenouille_bot - The main class the module is linked to.
 
+        sanitizer - thread ran every 3 minutes to check if the bot is still alive
         commands - list of all commands supported by the bot
         who_data - streamer names displayed by who
     """
@@ -24,7 +28,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         channel = self.grenouille_bot.config['DEFAULT']['channel']
         nickname = self.grenouille_bot.config['DEFAULT']['nickname']
-        server = 'irc.twitch.tv'
+        server = 'irc.chat.twitch.tv'
         password = self.grenouille_bot.config['DEFAULT']['token']
         port = 6667
 
@@ -40,6 +44,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
+        self.sanitizer = threading.Timer(60, self.sanitize).start()
+        self.last_ping = datetime.utcnow()
 
         self.twitters = xml.etree.ElementTree.parse(os.path.join(os.path.dirname(__file__), 'twitters.xml')).getroot()
 
@@ -48,13 +54,26 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         connection.join(self.channel)
         connection.set_rate_limit(0.5)
+        connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
-        logging.info('GrenouilleBot Ready')
+        connection.privmsg(self.channel, "Je suis la !grenouille pour vous servir.")
+        logging.info('Connected to channel.')
 
-    def _on_disconnect(self, connection, e):
-        """Called when the bot is disconnected from the IRC server.
+    def sanitize(self):
+        """Check that IRC twitch didn't kick us.
+        If that's the case, we reconnect.
         """
-        logging.error('Grenouille IRC Bot Disconnected !!!!')
+        if datetime.utcnow() - self.last_ping > timedelta(minutes=7):
+            logging.warning('Sanitizer detected lost connection. Reconnecting.')
+            self.connection.disconnect()
+            sleep(10)
+            self.connection.reconnect()
+        self.sanitizer = threading.Timer(60, self.sanitize).start()
+
+    def on_ping(self, connection, e):
+        """Save last ping for sanitizer.
+        """
+        self.last_ping = datetime.utcnow()
 
     def on_pubmsg(self, connection, e):
         """Called for every public message.

@@ -8,7 +8,7 @@ from bot.grenouille_irc_bot import GrenouilleIrcBot
 from bot.grenouille_calendar import GrenouilleCalendar
 
 # Logs
-logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.WARNING)
+logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.INFO)
 
 
 class GrenouilleBot:
