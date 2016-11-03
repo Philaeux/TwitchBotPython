@@ -64,6 +64,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         If that's the case, we reconnect.
         """
         if datetime.utcnow() - self.last_ping > timedelta(minutes=7):
+            self.last_ping = datetime.utcnow()
             logging.warning('Sanitizer detected lost connection. Reconnecting.')
             self.connection.disconnect()
             sleep(10)
