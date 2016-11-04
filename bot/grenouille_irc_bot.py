@@ -56,7 +56,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.set_rate_limit(0.5)
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
-        connection.privmsg(self.channel, "Je suis la !grenouille pour vous servir.")
         logging.info('Connected to channel.')
 
     def sanitize(self):
