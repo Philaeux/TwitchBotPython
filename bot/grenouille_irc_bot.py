@@ -160,7 +160,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         if is_admin and parameters is not None:
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
-    
+
     def youtube(self, is_admin=False, parameters=None):
         """Print the youtube official channel of the FroggedTV
 
@@ -177,15 +177,18 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         if parameters is not None:
             twitter = self.twitters.find('.//twitter[@name="{0}"]'.format(parameters.lower()))
-
             if twitter is not None:
                 return [twitter.text]
             else:
                 twitter = self.twitters.find('.//twitter[@alias="{0}"]'.format(parameters.lower()))
-
                 if twitter is not None:
                     return [twitter.text]
                 else:
                     return []
         else:
-            return ['Format de la commande : !twitter [nom du streamer]']
+            twitter = self.twitters.find('.//twitter[@name="froggedtv"]')
+
+            if twitter is not None:
+                return [twitter.text]
+            else:
+                return []
