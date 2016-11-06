@@ -184,15 +184,18 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         if parameters is not None:
             twitter = self.twitters.find('.//twitter[@name="{0}"]'.format(parameters.lower()))
-
             if twitter is not None:
                 return [twitter.text]
             else:
                 twitter = self.twitters.find('.//twitter[@alias="{0}"]'.format(parameters.lower()))
-
                 if twitter is not None:
                     return [twitter.text]
                 else:
                     return []
         else:
-            return ['Format de la commande : !twitter [nom du streamer]']
+            twitter = self.twitters.find('.//twitter[@name="froggedtv"]')
+
+            if twitter is not None:
+                return [twitter.text]
+            else:
+                return []
