@@ -41,6 +41,10 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             'youtube': self.youtube,
             'twitter': self.twitter
         }
+        self.aliases = {
+            't': 'twitter',
+            'y': 'youtube'
+        }
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
@@ -56,7 +60,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.set_rate_limit(0.5)
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
-        connection.privmsg(self.channel, "Je suis la !grenouille pour vous servir.")
         logging.info('Connected to channel.')
 
     def sanitize(self):
@@ -64,6 +67,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         If that's the case, we reconnect.
         """
         if datetime.utcnow() - self.last_ping > timedelta(minutes=7):
+            self.last_ping = datetime.utcnow()
             logging.warning('Sanitizer detected lost connection. Reconnecting.')
             self.connection.disconnect()
             sleep(10)
@@ -92,13 +96,16 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             return
         else:
             split = message[1:].split(' ', 1)
-            if split[0] not in self.commands:
-                return
-            else:
-                answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
 
-                for line in answer or []:
-                    connection.privmsg(self.channel, line)
+            if split[0] in self.commands:
+                answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
+            elif split[0] in self.aliases and self.aliases[split[0]] in self.commands:
+                answer = self.commands[self.aliases[split[0]]](is_admin, split[1] if len(split) > 1 else None)
+            else:
+                return
+
+            for line in answer or []:
+                connection.privmsg(self.channel, line)
 
     ######################################
     # Methods linked to the bot commands #
@@ -160,7 +167,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         if is_admin and parameters is not None:
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
-    
+
     def youtube(self, is_admin=False, parameters=None):
         """Print the youtube official channel of the FroggedTV
 
@@ -177,15 +184,18 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         if parameters is not None:
             twitter = self.twitters.find('.//twitter[@name="{0}"]'.format(parameters.lower()))
-
             if twitter is not None:
                 return [twitter.text]
             else:
                 twitter = self.twitters.find('.//twitter[@alias="{0}"]'.format(parameters.lower()))
-
                 if twitter is not None:
                     return [twitter.text]
                 else:
                     return []
         else:
-            return ['Format de la commande : !twitter [nom du streamer]']
+            twitter = self.twitters.find('.//twitter[@name="froggedtv"]')
+
+            if twitter is not None:
+                return [twitter.text]
+            else:
+                return []
