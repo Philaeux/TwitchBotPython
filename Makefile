@@ -7,8 +7,8 @@ all-stop:
 all-start:
 	docker-compose -p grenouillebot -f docker/docker-compose.yml up -d --build
 
-# start bot
-bot-start:
+# run bot
+bot-run:
 	docker-compose -p grenouillebot -f docker/docker-compose.yml up --build grenouillebot
 
 # build
