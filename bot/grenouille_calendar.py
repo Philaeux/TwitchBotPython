@@ -24,7 +24,7 @@ class Event:
         days = self.start - now
         result = ''
         if days.days > 0:
-            result = 'J+{0} '.format(days)
+            result = 'J+{0} '.format(days.days)
         return '{0}{1} - {2} {3}'.format(result, self.start.strftime("%H:%M"), self.end.strftime("%H:%M"), self.summary)
 
 
