@@ -7,7 +7,6 @@ import irc.bot
 import irc.strings
 from datetime import datetime, timezone, timedelta
 import threading
-
 import xml.etree.ElementTree
 
 
@@ -47,11 +46,13 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         }
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
+       
         self.channel = channel
         self.sanitizer = threading.Timer(60, self.sanitize).start()
         self.last_ping = datetime.utcnow()
 
         self.twitters = xml.etree.ElementTree.parse(os.path.join(os.path.dirname(__file__), 'twitters.xml')).getroot()
+
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server.
@@ -61,7 +62,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('Connected to channel.')
-
+        self.grenouille_bot.grenouille_http_server.start(self)
+        
     def sanitize(self):
         """Check that IRC twitch didn't kick us.
         If that's the case, we reconnect.
@@ -79,6 +81,9 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         self.last_ping = datetime.utcnow()
 
+    def send_msg(self, line):
+        self.connection.privmsg(self.channel, line)
+        
     def on_pubmsg(self, connection, e):
         """Called for every public message.
         Extract command, call it with admin info.
