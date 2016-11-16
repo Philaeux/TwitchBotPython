@@ -4,13 +4,14 @@ from configparser import ConfigParser
 from sys import exit
 
 
+
 from bot.grenouille_irc_bot import GrenouilleIrcBot
 from bot.grenouille_calendar import GrenouilleCalendar
+from bot.grenouille_http_server import GrenouilleHttpServer
 
 # Logs
 logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.INFO)
-
-
+     
 class GrenouilleBot:
     """The Master class for the GrenouilleBot
 
@@ -35,16 +36,21 @@ class GrenouilleBot:
         self.event_list = []
 
         # Modules
+        self.grenouille_http_server = GrenouilleHttpServer(self)
         self.grenouille_irc_bot = GrenouilleIrcBot(self)
         self.grenouille_calendar = GrenouilleCalendar(self)
-
+        
+        
     def start(self):
         """Start the GrenouilleBot by initializing the IrcClient
 
         :return:
         """
+
         self.grenouille_calendar.start()
         self.grenouille_irc_bot.start()
+
+              
 
     def stop(self):
         """Stop the running GrenouilleBot by stopping all actors
@@ -57,3 +63,5 @@ class GrenouilleBot:
 # Start if main script
 if __name__ == '__main__':
     GrenouilleBot().start()
+
+
