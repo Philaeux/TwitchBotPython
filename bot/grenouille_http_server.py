@@ -34,8 +34,8 @@ class GrenouilleHttpServer:
 
         try:
             self.server = threading.Timer(11, self.runserver).start()
-        except Exception:
-            logging.info(Exception)
+        except Exception as e:
+            logging.info(e)
 
     def runserver(self):
         port = 8083
