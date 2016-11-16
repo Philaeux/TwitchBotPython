@@ -45,7 +45,6 @@ class GrenouilleBot:
 
         :return:
         """
-
         self.grenouille_calendar.start()
         self.grenouille_irc_bot.start()
 

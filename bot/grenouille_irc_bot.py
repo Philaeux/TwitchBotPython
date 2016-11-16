@@ -7,6 +7,7 @@ import irc.bot
 import irc.strings
 from datetime import datetime, timezone, timedelta
 import threading
+
 import xml.etree.ElementTree
 
 
@@ -60,6 +61,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('Connected to channel.')
+
         self.grenouille_bot.grenouille_http_server.start(self)
         
     def sanitize(self):
