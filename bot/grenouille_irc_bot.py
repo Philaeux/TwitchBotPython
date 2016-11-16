@@ -46,13 +46,11 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         }
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
-       
         self.channel = channel
         self.sanitizer = threading.Timer(60, self.sanitize).start()
         self.last_ping = datetime.utcnow()
 
         self.twitters = xml.etree.ElementTree.parse(os.path.join(os.path.dirname(__file__), 'twitters.xml')).getroot()
-
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server.

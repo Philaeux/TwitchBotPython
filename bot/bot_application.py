@@ -10,8 +10,8 @@ from bot.grenouille_http_server import GrenouilleHttpServer
 
 # Logs
 logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.INFO)
- 
-     
+
+
 class GrenouilleBot:
     """The Master class for the GrenouilleBot
 
@@ -38,8 +38,8 @@ class GrenouilleBot:
         # Modules
         self.grenouille_http_server = GrenouilleHttpServer(self)
         self.grenouille_irc_bot = GrenouilleIrcBot(self)
-        self.grenouille_calendar = GrenouilleCalendar(self) 
-        
+        self.grenouille_calendar = GrenouilleCalendar(self)
+
     def start(self):
         """Start the GrenouilleBot by initializing the IrcClient
 
@@ -48,7 +48,7 @@ class GrenouilleBot:
 
         self.grenouille_calendar.start()
         self.grenouille_irc_bot.start()
-  
+
     def stop(self):
         """Stop the running GrenouilleBot by stopping all actors
 
