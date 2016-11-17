@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import threading
 import logging
 import cgi
-
+import os
 
 
 class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
@@ -33,12 +33,12 @@ class GrenouilleHttpServer:
         bot = grenouille_irc_bot
 
         try:
-            self.server = threading.Timer(11, self.runserver).start()
+            self.server = threading.Timer(1, self.runserver).start()
         except Exception:
             logging.info(Exception)
 
     def runserver(self):
-        port = 8083
+        port = int(os.environ['WEBSERVER_PORT'])
         server_address = ('127.0.0.1', port)
         httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
         logging.info('webserver started on port ' + str(port))
