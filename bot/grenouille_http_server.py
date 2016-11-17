@@ -5,23 +5,25 @@ import cgi
 import os
 
 
-class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
-
-    def do_POST(self):
-        form = cgi.FieldStorage(
-            fp=self.rfile,
-            headers=self.headers,
-            environ={"REQUEST_METHOD": "POST"}
-        )
+def MakeHandler(bot):
+    class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
+        
+        def do_POST(self):
+            form = cgi.FieldStorage(
+                fp=self.rfile,
+                headers=self.headers,
+                environ={"REQUEST_METHOD": "POST"}
+            )
             
-        for item in form.list:
-            if (item.name == "say"):
-                bot.send_msg(item.value)
-                
-                self.send_response(200)
-                self.send_header("Content-type", "text/html")
-                self.end_headers()
-                return
+            for item in form.list:
+                if (item.name == "say"):
+                    bot.send_msg(item.value)
+                    
+                    self.send_response(200)
+                    self.send_header("Content-type", "text/html")
+                    self.end_headers()
+                    return
+    return testHTTPServer_RequestHandler
 
 class GrenouilleHttpServer:
     
@@ -29,8 +31,8 @@ class GrenouilleHttpServer:
         self.grenouille_bot = grenouille_bot
         
     def start(self, grenouille_irc_bot):
-        global bot
-        bot = grenouille_irc_bot
+        
+        self.bot = grenouille_irc_bot
 
         try:
             self.server = threading.Timer(1, self.runserver).start()
@@ -40,7 +42,8 @@ class GrenouilleHttpServer:
     def runserver(self):
         port = int(os.environ['WEBSERVER_PORT'])
         server_address = ('127.0.0.1', port)
-        httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
+        myhandler = MakeHandler(self.bot)
+        httpd = HTTPServer(server_address, myhandler)
         logging.info('webserver started on port ' + str(port))
         httpd.serve_forever()
 
