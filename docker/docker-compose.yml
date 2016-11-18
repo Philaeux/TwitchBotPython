@@ -16,4 +16,4 @@ services:
     ports:
       - "8083:8083"
     network_mode: "host"
-    
+
