@@ -80,8 +80,12 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         self.last_ping = datetime.utcnow()
 
     def send_msg(self, line):
-        self.connection.privmsg(self.channel, line)
-        
+        try :
+            self.connection.privmsg(self.channel, line)
+        except Exception:
+            """do something if it fails ? push message in a queue and read it after reconnection ?"""
+            return
+            
     def on_pubmsg(self, connection, e):
         """Called for every public message.
         Extract command, call it with admin info.
@@ -108,7 +112,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                 return
 
             for line in answer or []:
-                connection.privmsg(self.channel, line)
+                self.send_msg(line)
+
 
     ######################################
     # Methods linked to the bot commands #
