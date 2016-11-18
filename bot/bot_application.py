@@ -36,18 +36,26 @@ class GrenouilleBot:
         self.event_list = []
 
         # Modules
-        self.grenouille_http_server = GrenouilleHttpServer(self)
-        self.grenouille_irc_bot = GrenouilleIrcBot(self)
-        self.grenouille_calendar = GrenouilleCalendar(self)
 
+        try :
+            self.grenouille_irc_bot = GrenouilleIrcBot(self)
+            self.grenouille_http_server = GrenouilleHttpServer(self)
+            self.grenouille_calendar = GrenouilleCalendar(self)
+        except Exception as e :
+            logging.info(e)
+            
     def start(self):
         """Start the GrenouilleBot by initializing the IrcClient
 
         :return:
         """
-        self.grenouille_calendar.start()
-        self.grenouille_irc_bot.start()
-
+        try:
+            
+            self.grenouille_calendar.start()
+            self.grenouille_http_server.start()
+            self.grenouille_irc_bot.start()
+        except Exception as e:
+            logging.info(e)
     def stop(self):
         """Stop the running GrenouilleBot by stopping all actors
 

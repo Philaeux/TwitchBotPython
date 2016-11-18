@@ -61,8 +61,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('Connected to channel.')
-
-        self.grenouille_bot.grenouille_http_server.start(self)
         
     def sanitize(self):
         """Check that IRC twitch didn't kick us.

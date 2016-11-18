@@ -26,25 +26,26 @@ def MakeHandler(bot):
     return testHTTPServer_RequestHandler
 
 class GrenouilleHttpServer:
-    
+
     def __init__(self, grenouille_bot):
         self.grenouille_bot = grenouille_bot
         
-    def start(self, grenouille_irc_bot):
-        
-        self.bot = grenouille_irc_bot
-
-        try:
-            self.server = threading.Timer(1, self.runserver).start()
+    def start(self):
+        try :
+            self.bot = self.grenouille_bot.grenouille_irc_bot
+            threading.Thread(target=self.runserver).start()
         except Exception as e:
             logging.info(e)
 
+            
     def runserver(self):
-        port = int(os.environ['WEBSERVER_PORT'])
-        server_address = ('127.0.0.1', port)
-        myhandler = MakeHandler(self.bot)
-        httpd = HTTPServer(server_address, myhandler)
-        logging.info('webserver started on port ' + str(port))
-        httpd.serve_forever()
-
+        try :
+            port = int(os.environ['WEBSERVER_PORT'])
+            server_address = ('127.0.0.1', port)
+            myhandler = MakeHandler(self.bot)
+            httpd = HTTPServer(server_address, myhandler)
+            logging.info('webserver started on port ' + str(port))
+            httpd.serve_forever()
+        except Exception as e:
+            logging.info(e)
         
