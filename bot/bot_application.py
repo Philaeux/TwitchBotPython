@@ -50,12 +50,12 @@ class GrenouilleBot:
         :return:
         """
         try:
-            
             self.grenouille_calendar.start()
             self.grenouille_http_server.start()
             self.grenouille_irc_bot.start()
         except Exception as e:
             logging.info(e)
+
     def stop(self):
         """Stop the running GrenouilleBot by stopping all actors
 

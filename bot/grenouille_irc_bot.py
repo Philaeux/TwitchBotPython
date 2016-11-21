@@ -80,6 +80,9 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         self.last_ping = datetime.utcnow()
 
     def send_msg(self, line):
+        """Send a message to the IRC channel.
+        Do nothing if there is an exception (like disconnected)
+        """
         try :
             self.connection.privmsg(self.channel, line)
         except Exception:
