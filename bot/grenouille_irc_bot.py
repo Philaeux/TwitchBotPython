@@ -33,18 +33,33 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         port = 6667
 
         self.who_data = 'Aucune info sur le streamer actuel.'
-        self.commands = {
-            'grenouille': self.grenouille,
-            'next': self.next,
-            'now': self.now,
-            'who': self.who,
-            'youtube': self.youtube,
-            'twitter': self.twitter
-        }
-        self.aliases = {
-            't': 'twitter',
-            'y': 'youtube'
-        }
+        self.commands = [
+            {
+                'name': 'grenouille',
+                'aliases': [],
+                'action': self.grenouille
+            },{
+                'name': 'next',
+                'aliases': [],
+                'action': self.next
+            },{
+                'name': 'now',
+                'aliases': [],
+                'action': self.now
+            },{
+                'name': 'who',
+                'aliases': [],
+                'action': self.who
+            },{
+                'name': 'youtube',
+                'aliases': ['y'],
+                'action': self.youtube
+            },{
+                'name': 'twitter',
+                'aliases': ['t'],
+                'action': self.twitter
+            }
+        ]
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
@@ -61,7 +76,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('Connected to channel.')
-        
+
     def sanitize(self):
         """Check that IRC twitch didn't kick us.
         If that's the case, we reconnect.
@@ -88,7 +103,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         except Exception:
             """do something if it fails ? push message in a queue and read it after reconnection ?"""
             return
-            
+
     def on_pubmsg(self, connection, e):
         """Called for every public message.
         Extract command, call it with admin info.
