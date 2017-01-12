@@ -7,8 +7,8 @@ RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install python3-pip
 
 RUN pip3 install \
-    irc \
-    google-api-python-client
+    irc==15.0.6 \
+    google-api-python-client==1.5.5
 
 ENV PYTHONPATH $PYTHONPATH:/grenouillebot
 
