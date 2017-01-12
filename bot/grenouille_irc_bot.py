@@ -36,25 +36,30 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         self.commands = [
             {
                 'name': 'grenouille',
-                'aliases': [],
+                'aliases': ['help', 'aide'],
                 'action': self.grenouille
-            },{
+            },
+            {
                 'name': 'next',
                 'aliases': [],
                 'action': self.next
-            },{
+            },
+            {
                 'name': 'now',
                 'aliases': [],
                 'action': self.now
-            },{
+            },
+            {
                 'name': 'who',
                 'aliases': [],
                 'action': self.who
-            },{
+            },
+            {
                 'name': 'youtube',
                 'aliases': ['y'],
                 'action': self.youtube
-            },{
+            },
+            {
                 'name': 'twitter',
                 'aliases': ['t'],
                 'action': self.twitter
@@ -121,17 +126,23 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             return
         else:
             split = message[1:].split(' ', 1)
+            command = self.find_command(split[0])
 
-            if split[0] in self.commands:
-                answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
-            elif split[0] in self.aliases and self.aliases[split[0]] in self.commands:
-                answer = self.commands[self.aliases[split[0]]](is_admin, split[1] if len(split) > 1 else None)
+            if command is not None:
+                action = command['action']
+                answer = action(is_admin, split[1] if len(split) > 1 else None)
             else:
                 return
 
             for line in answer or []:
                 self.send_msg(line)
 
+    def find_command(self, name):
+        for command in self.commands:
+            if (name == command['name']) or (name in command['aliases']):
+                return command
+
+        return None
 
     ######################################
     # Methods linked to the bot commands #
@@ -142,7 +153,13 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         :return:
         """
-        return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(self.commands.keys())))]
+
+        commands = []
+
+        for command in self.commands:
+            commands.append(command['name'])
+
+        return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(commands)))]
 
     def next(self, is_admin=False, parameters=None):
         """Display the next event from the calendar.
