@@ -33,18 +33,38 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         port = 6667
 
         self.who_data = 'Aucune info sur le streamer actuel.'
-        self.commands = {
-            'grenouille': self.grenouille,
-            'next': self.next,
-            'now': self.now,
-            'who': self.who,
-            'youtube': self.youtube,
-            'twitter': self.twitter
-        }
-        self.aliases = {
-            't': 'twitter',
-            'y': 'youtube'
-        }
+        self.commands = [
+            {
+                'name': 'grenouille',
+                'aliases': ['help', 'aide'],
+                'action': self.grenouille
+            },
+            {
+                'name': 'next',
+                'aliases': [],
+                'action': self.next
+            },
+            {
+                'name': 'now',
+                'aliases': [],
+                'action': self.now
+            },
+            {
+                'name': 'who',
+                'aliases': [],
+                'action': self.who
+            },
+            {
+                'name': 'youtube',
+                'aliases': ['y'],
+                'action': self.youtube
+            },
+            {
+                'name': 'twitter',
+                'aliases': ['t'],
+                'action': self.twitter
+            }
+        ]
 
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
@@ -61,7 +81,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         connection.send_raw('CAP REQ :twitch.tv/commands')
         connection.send_raw('CAP REQ :twitch.tv/tags')
         logging.info('Connected to channel.')
-        
+
     def sanitize(self):
         """Check that IRC twitch didn't kick us.
         If that's the case, we reconnect.
@@ -88,7 +108,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         except Exception:
             """do something if it fails ? push message in a queue and read it after reconnection ?"""
             return
-            
+
     def on_pubmsg(self, connection, e):
         """Called for every public message.
         Extract command, call it with admin info.
@@ -106,17 +126,27 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             return
         else:
             split = message[1:].split(' ', 1)
+            command = self.find_command(split[0])
 
-            if split[0] in self.commands:
-                answer = self.commands[split[0]](is_admin, split[1] if len(split) > 1 else None)
-            elif split[0] in self.aliases and self.aliases[split[0]] in self.commands:
-                answer = self.commands[self.aliases[split[0]]](is_admin, split[1] if len(split) > 1 else None)
+            if command is not None:
+                action = command['action']
+                answer = action(is_admin, split[1] if len(split) > 1 else None)
             else:
                 return
 
             for line in answer or []:
                 self.send_msg(line)
 
+    def find_command(self, name):
+        """Find if asked command exists and returns it
+
+        :return:
+        """
+        for command in self.commands:
+            if (name == command['name']) or (name in command['aliases']):
+                return command
+
+        return None
 
     ######################################
     # Methods linked to the bot commands #
@@ -127,7 +157,12 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         :return:
         """
-        return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(self.commands.keys())))]
+        commands = []
+
+        for command in self.commands:
+            commands.append(command['name'])
+
+        return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(commands)))]
 
     def next(self, is_admin=False, parameters=None):
         """Display the next event from the calendar.
