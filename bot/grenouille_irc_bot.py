@@ -138,6 +138,10 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                 self.send_msg(line)
 
     def find_command(self, name):
+        """Find if asked command exists and returns it
+
+        :return:
+        """
         for command in self.commands:
             if (name == command['name']) or (name in command['aliases']):
                 return command
@@ -153,7 +157,6 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         :return:
         """
-
         commands = []
 
         for command in self.commands:
