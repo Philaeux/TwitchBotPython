@@ -178,6 +178,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             else:
                 if self.grenouille_bot.event_list[0].start > now:
                     return [str(self.grenouille_bot.event_list[0])]
+                elif len(self.grenouille_bot.event_list) == 1:
+                    return ['Aucun événement planifié dans le calendrier.']
                 else:
                     return [str(self.grenouille_bot.event_list[1])]
         except Exception:
