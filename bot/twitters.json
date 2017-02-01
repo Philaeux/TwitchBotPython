@@ -1,0 +1,81 @@
+[
+    {
+        "name": "bartsake",
+        "aliases": [],
+        "link": "https://twitter.com/Bartsake"
+    },
+    {
+        "name": "captainnelson",
+        "aliases": ["nelson"],
+        "link": "https://twitter.com/CaptainNelson_"
+    },
+    {
+        "name": "froggedtv",
+        "aliases": ["ftv"],
+        "link": "https://twitter.com/FroggedTV"
+    },
+    {
+        "name": "guiguioh",
+        "aliases": [],
+        "link": "https://twitter.com/Guiguioh"
+    },
+    {
+        "name": "hugo",
+        "aliases": ["glftvhugobeauf"],
+        "link": "https://twitter.com/HugoDota"
+    },
+    {
+        "name": "juna",
+        "aliases": ["glftvjuna"],
+        "link": "https://twitter.com/JunaDota"
+    },
+    {
+        "name": "luciqno",
+        "aliases": ["lulu", "glftvluluhype", "glftvlulunette", "glftvfail", "glftvnul "],
+        "link": "https://twitter.com/LuCiqNo"
+    },
+    {
+        "name": "marsu",
+        "aliases": ["971marsu", "glftvmarsut"],
+        "link": "https://twitter.com/marSuDOTA"
+    },
+    {
+        "name": "namax",
+        "aliases": ["max"],
+        "link": "https://twitter.com/NamaxDota"
+    },
+    {
+        "name": "neorigg",
+        "aliases": [],
+        "link": "https://twitter.com/Neorigg"
+    },
+    {
+        "name": "philaeux",
+        "aliases": [],
+        "link": "https://twitter.com/Philaeux"
+    },
+    {
+        "name": "riddell",
+        "aliases": ["riddellz"],
+        "link": "https://twitter.com/riddellzz"
+    },
+    {
+        "name": "shiba",
+        "aliases": ["shibounet", "glftvshibasleeper"],
+        "link": "https://twitter.com/shibounet"
+    },
+    {
+        "name": "thibault",
+        "aliases": ["thibaultv"],
+        "link": "https://twitter.com/ThibaultVlacich"
+    },
+    {
+        "name": "v0ja",
+        "aliases": ["voja", "javo", "glftvvojo"],
+        "link": "https://twitter.com/v0jaDota"
+    },
+    {
+        "name": "yoµyoµ",
+        "aliases": ["youyou", "glftvyouyouchamp"]
+    }
+]
