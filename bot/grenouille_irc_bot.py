@@ -237,7 +237,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             twitter = self.find_twitter('froggedtv')
 
         if twitter is not None:
-            return [twitter['link']]
+            return ['{0} : {1}'.format(twitter['pretty_name'], twitter['link'])]
         else:
             return []
 
@@ -247,7 +247,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         :return:
         """
         for twitter in self.twitters:
-            if (name == twitter['name']) or (name in twitter['aliases']):
+            if name in twitter['aliases']:
                 return twitter
 
         return None

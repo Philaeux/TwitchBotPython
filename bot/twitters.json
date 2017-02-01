@@ -1,81 +1,82 @@
 [
     {
-        "name": "bartsake",
-        "aliases": [],
+        "aliases": ["bartsake", "bart", "ratsake"],
+        "pretty_name": "Bartsake",
         "link": "https://twitter.com/Bartsake"
     },
     {
-        "name": "captainnelson",
-        "aliases": ["nelson"],
+        "aliases": ["captainnelson", "nelson"],
+        "pretty_name": "CaptainNelson",
         "link": "https://twitter.com/CaptainNelson_"
     },
     {
-        "name": "froggedtv",
-        "aliases": ["ftv"],
+        "aliases": ["froggedtv", "ftv"],
+        "pretty_name": "FroggedTV",
         "link": "https://twitter.com/FroggedTV"
     },
     {
-        "name": "guiguioh",
-        "aliases": [],
+        "aliases": ["guiguioh"],
+        "pretty_name": "Guiguioh",
         "link": "https://twitter.com/Guiguioh"
     },
     {
-        "name": "hugo",
-        "aliases": ["glftvhugobeauf"],
+        "aliases": ["hugo", "glftvhugobeauf"],
+        "pretty_name": "Hugo",
         "link": "https://twitter.com/HugoDota"
     },
     {
-        "name": "juna",
-        "aliases": ["glftvjuna"],
+        "aliases": ["juna", "glftvjuna"],
+        "pretty_name": "Juna",
         "link": "https://twitter.com/JunaDota"
     },
     {
-        "name": "luciqno",
-        "aliases": ["lulu", "glftvluluhype", "glftvlulunette", "glftvfail", "glftvnul "],
+        "aliases": ["luciqno", "lulu", "glftvluluhype", "glftvlulunette", "glftvfail", "glftvnul "],
+        "pretty_name": "LuCiqNo",
         "link": "https://twitter.com/LuCiqNo"
     },
     {
-        "name": "marsu",
-        "aliases": ["971marsu", "glftvmarsut"],
+        "aliases": ["marsu", "sumar", "971marsu", "glftvmarsut"],
+        "pretty_name": "MarSu",
         "link": "https://twitter.com/marSuDOTA"
     },
     {
-        "name": "namax",
-        "aliases": ["max"],
+        "aliases": ["max", "namax"],
+        "pretty_name": "Namax",
         "link": "https://twitter.com/NamaxDota"
     },
     {
-        "name": "neorigg",
-        "aliases": [],
+        "aliases": ["neorigg"],
+        "pretty_name": "Neorigg",
         "link": "https://twitter.com/Neorigg"
     },
     {
-        "name": "philaeux",
-        "aliases": [],
+        "aliases": ["philaeux"],
+        "pretty_name": "Philaeux",
         "link": "https://twitter.com/Philaeux"
     },
     {
-        "name": "riddell",
-        "aliases": ["riddellz"],
+        "aliases": ["riddell", "riddellz"],
+        "pretty_name": "Riddell",
         "link": "https://twitter.com/riddellzz"
     },
     {
-        "name": "shiba",
-        "aliases": ["shibounet", "glftvshibasleeper"],
+        "aliases": ["shiba", "shibounet", "glftvshibasleeper"],
+        "pretty_name": "ShiBa",
         "link": "https://twitter.com/shibounet"
     },
     {
-        "name": "thibault",
-        "aliases": ["thibaultv"],
+        "aliases": ["thibault", "thibaultv"],
+        "pretty_name": "Thibault",
         "link": "https://twitter.com/ThibaultVlacich"
     },
     {
-        "name": "v0ja",
-        "aliases": ["voja", "javo", "glftvvojo"],
+        "aliases": ["v0ja", "voja", "javo", "glftvvojo"],
+        "pretty_name": "v0ja",
         "link": "https://twitter.com/v0jaDota"
     },
     {
-        "name": "yoµyoµ",
-        "aliases": ["youyou", "glftvyouyouchamp"]
+        "aliases": ["yoµyoµ", "youyou", "glftvyouyouchamp"],
+        "pretty_name": "YouYou",
+        "link": "https://twitter.com/YouyouDOTA"
     }
 ]
