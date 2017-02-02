@@ -8,7 +8,7 @@ import irc.strings
 from datetime import datetime, timezone, timedelta
 import threading
 
-import xml.etree.ElementTree
+import json
 
 
 class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
@@ -71,7 +71,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         self.sanitizer = threading.Timer(60, self.sanitize).start()
         self.last_ping = datetime.utcnow()
 
-        self.twitters = xml.etree.ElementTree.parse(os.path.join(os.path.dirname(__file__), 'twitters.xml')).getroot()
+        with open(os.path.join(os.path.dirname(__file__), 'twitters.json')) as json_data:
+            self.twitters = json.load(json_data)
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server.
@@ -231,19 +232,22 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         :return:
         """
         if parameters is not None:
-            twitter = self.twitters.find('.//twitter[@name="{0}"]'.format(parameters.lower()))
-            if twitter is not None:
-                return [twitter.text]
-            else:
-                twitter = self.twitters.find('.//twitter[@alias="{0}"]'.format(parameters.lower()))
-                if twitter is not None:
-                    return [twitter.text]
-                else:
-                    return []
+            twitter = self.find_twitter(parameters.lower())
         else:
-            twitter = self.twitters.find('.//twitter[@name="froggedtv"]')
+            twitter = self.find_twitter('froggedtv')
 
-            if twitter is not None:
-                return [twitter.text]
-            else:
-                return []
+        if twitter is not None:
+            return ['{0} : {1}'.format(twitter['pretty_name'], twitter['link'])]
+        else:
+            return []
+
+    def find_twitter(self, name):
+        """Find if asked command twitter and returns it
+
+        :return:
+        """
+        for twitter in self.twitters:
+            if name in twitter['aliases']:
+                return twitter
+
+        return None

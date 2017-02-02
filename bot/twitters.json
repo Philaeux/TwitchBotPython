@@ -1,0 +1,82 @@
+[
+    {
+        "aliases": ["bartsake", "bart", "ratsake"],
+        "pretty_name": "Bartsake",
+        "link": "https://twitter.com/Bartsake"
+    },
+    {
+        "aliases": ["captainnelson", "nelson"],
+        "pretty_name": "CaptainNelson",
+        "link": "https://twitter.com/CaptainNelson_"
+    },
+    {
+        "aliases": ["froggedtv", "ftv"],
+        "pretty_name": "FroggedTV",
+        "link": "https://twitter.com/FroggedTV"
+    },
+    {
+        "aliases": ["guiguioh"],
+        "pretty_name": "Guiguioh",
+        "link": "https://twitter.com/Guiguioh"
+    },
+    {
+        "aliases": ["hugo", "glftvhugobeauf"],
+        "pretty_name": "Hugo",
+        "link": "https://twitter.com/HugoDota"
+    },
+    {
+        "aliases": ["juna", "glftvjuna"],
+        "pretty_name": "Juna",
+        "link": "https://twitter.com/JunaDota"
+    },
+    {
+        "aliases": ["luciqno", "lulu", "glftvluluhype", "glftvlulunette", "glftvfail", "glftvnul "],
+        "pretty_name": "LuCiqNo",
+        "link": "https://twitter.com/LuCiqNo"
+    },
+    {
+        "aliases": ["marsu", "sumar", "971marsu", "glftvmarsut"],
+        "pretty_name": "MarSu",
+        "link": "https://twitter.com/marSuDOTA"
+    },
+    {
+        "aliases": ["max", "namax"],
+        "pretty_name": "Namax",
+        "link": "https://twitter.com/NamaxDota"
+    },
+    {
+        "aliases": ["neorigg"],
+        "pretty_name": "Neorigg",
+        "link": "https://twitter.com/Neorigg"
+    },
+    {
+        "aliases": ["philaeux"],
+        "pretty_name": "Philaeux",
+        "link": "https://twitter.com/Philaeux"
+    },
+    {
+        "aliases": ["riddell", "riddellz"],
+        "pretty_name": "Riddell",
+        "link": "https://twitter.com/riddellzz"
+    },
+    {
+        "aliases": ["shiba", "shibounet", "glftvshibasleeper"],
+        "pretty_name": "ShiBa",
+        "link": "https://twitter.com/shibounet"
+    },
+    {
+        "aliases": ["thibault", "thibaultv"],
+        "pretty_name": "Thibault",
+        "link": "https://twitter.com/ThibaultVlacich"
+    },
+    {
+        "aliases": ["v0ja", "voja", "javo", "glftvvojo"],
+        "pretty_name": "v0ja",
+        "link": "https://twitter.com/v0jaDota"
+    },
+    {
+        "aliases": ["yoµyoµ", "youyou", "glftvyouyouchamp"],
+        "pretty_name": "YouYou",
+        "link": "https://twitter.com/YouyouDOTA"
+    }
+]
