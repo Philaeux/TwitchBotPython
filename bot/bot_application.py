@@ -7,6 +7,7 @@ from sys import exit
 from bot.grenouille_irc_bot import GrenouilleIrcBot
 from bot.grenouille_calendar import GrenouilleCalendar
 from bot.grenouille_http_server import GrenouilleHttpServer
+from bot.grenouille_crs import GrenouilleCRS
 
 # Logs
 logging.basicConfig(format='[%(asctime)s] %(levelname)s (%(threadName)-8s) %(name)s: %(message)s', level=logging.INFO)
@@ -41,9 +42,10 @@ class GrenouilleBot:
             self.grenouille_irc_bot = GrenouilleIrcBot(self)
             self.grenouille_http_server = GrenouilleHttpServer(self)
             self.grenouille_calendar = GrenouilleCalendar(self)
+            self.grenouille_crs = GrenouilleCRS(self)
         except Exception as e :
             logging.info(e)
-            
+
     def start(self):
         """Start the GrenouilleBot by initializing the IrcClient
 

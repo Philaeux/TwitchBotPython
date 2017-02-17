@@ -63,6 +63,11 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                 'name': 'twitter',
                 'aliases': ['t'],
                 'action': self.twitter
+            },
+            {
+                'name': 'crs',
+                'aliases': [],
+                'action': self.crs
             }
         ]
 
@@ -251,3 +256,8 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
                 return twitter
 
         return None
+
+    def crs(self, is_admin=False, parameters=None):
+        split = parameters.split(' ', 1)
+
+        return self.grenouille_bot.grenouille_crs.execute(split[0], split[1] if len(split) > 1 else None, is_admin)
