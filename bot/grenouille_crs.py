@@ -100,12 +100,12 @@ class GrenouilleCRS:
 
         # Check if user has already voted
         if sender in self.vote_voters:
-            return
+            return ['/w {} Erreur : Désolé, vous avez déjà voté !'.format(sender)]
 
         hero_to_vote = self.find_hero(parameters)
 
         if hero_to_vote is None:
-            return ['Impossible de trouver le héro ' + parameters]
+            return ['/w {} Erreur : Impossible de trouver le héro {}'.format(sender, parameters)]
 
         for hero in self.vote_heroes:
             if hero_to_vote[0] == hero['id']:
