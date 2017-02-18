@@ -136,7 +136,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
             if command is not None:
                 action = command['action']
-                answer = action(is_admin, split[1] if len(split) > 1 else None)
+                answer = action(sender, is_admin, split[1] if len(split) > 1 else None)
             else:
                 return
 
@@ -158,7 +158,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
     # Methods linked to the bot commands #
     ######################################
 
-    def grenouille(self, is_admin=False, parameters=None):
+    def grenouille(self, sender=None, is_admin=False, parameters=None):
         """List all bot commands
 
         :return:
@@ -170,7 +170,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         return ["Les croassements que j'écoute sont: {0}.".format(', '.join(sorted(commands)))]
 
-    def next(self, is_admin=False, parameters=None):
+    def next(self, sender=None, is_admin=False, parameters=None):
         """Display the next event from the calendar.
 
         :return:
@@ -192,7 +192,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             logging.exception('Error when next.')
             return ['Erreur interne à la grenouille.']
 
-    def now(self, is_admin=False, parameters=None):
+    def now(self, sender=None, is_admin=False, parameters=None):
         """Display the current event from the calendar.
 
         :return:
@@ -211,7 +211,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             logging.exception('Error when now.')
             return ['Erreur interne à la grenouille.']
 
-    def who(self, is_admin=False, parameters=None):
+    def who(self, sender=None, is_admin=False, parameters=None):
         """Display current streamers.
         Mod can change with parameters
 
@@ -222,7 +222,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
             self.who_data = 'Streamers actuels: {0}'.format(parameters)
         return [self.who_data]
 
-    def youtube(self, is_admin=False, parameters=None):
+    def youtube(self, sender=None, is_admin=False, parameters=None):
         """Print the youtube official channel of the FroggedTV
 
         :param parameters useless in this function
@@ -230,7 +230,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         """
         return ['Le YouTube de la FroggedTV : https://www.youtube.com/FroggedTV']
 
-    def twitter(self, is_admin=False, parameters=None):
+    def twitter(self, sender=None, is_admin=False, parameters=None):
         """Display the Twitter account of the asked streamer.
 
         :param parameters name of the streamer
@@ -257,7 +257,7 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
 
         return None
 
-    def crs(self, is_admin=False, parameters=None):
+    def crs(self, sender=None, is_admin=False, parameters=None):
         split = parameters.split(' ', 1)
 
-        return self.grenouille_bot.grenouille_crs.execute(split[0], split[1] if len(split) > 1 else None, is_admin)
+        return self.grenouille_bot.grenouille_crs.execute(sender, is_admin, split[0], split[1] if len(split) > 1 else None)

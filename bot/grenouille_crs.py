@@ -13,6 +13,7 @@ class GrenouilleCRS:
 
         self.vote_opened = False
         self.vote_heroes = []
+        self.vote_voters = []
 
         self.connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), 'heroes.db'))
         self.cursor = self.connection.cursor()
@@ -51,20 +52,20 @@ class GrenouilleCRS:
 
         return self.cursor.fetchone()
 
-    def execute(self, command, parameters = None, is_admin = False):
+    def execute(self, sender = None, is_admin = False, command = None, parameters = None):
         action = self.find_action(command)
 
         if action is not None:
-            return action['action'](parameters, is_admin)
+            return action['action'](sender, is_admin, parameters)
         else:
             return
 
-    def open(self, parameters, is_admin = False):
+    def open(self, sender = None, is_admin = False, parameters = None):
         """Open a vote
         """
 
         if not is_admin:
-            #return
+            return
 
         if self.vote_opened:
             return ['Erreur : Un vote est déjà en cours !']
@@ -90,14 +91,16 @@ class GrenouilleCRS:
 
         return ['Le vote a été ouvert !', 'Liste des cibles : ' + ', '.join([hero['name'] for hero in self.vote_heroes]), 'Pour voter, tapez : !crs vote <nom de la cible> dans le chat !']
 
-    def vote(self, parameters, is_admin = False):
+    def vote(self, sender = None, is_admin = False, parameters = None):
         """Register a vote
         """
 
-        if (not self.vote_opened) or (parameters is None):
+        if (not self.vote_opened) or (parameters is None) or (sender is None):
             return
 
-        # TODO: Check if user has already voted
+        # Check if user has already voted
+        if sender in self.vote_voters:
+            return
 
         hero_to_vote = self.find_hero(parameters)
 
@@ -107,9 +110,12 @@ class GrenouilleCRS:
         for hero in self.vote_heroes:
             if hero_to_vote[0] == hero['id']:
                 hero['votes'] += 1
+
+                self.vote_voters.append(sender)
+
                 return
 
-    def close(self, parameters, is_admin = False):
+    def close(self, sender = None, is_admin = False, parameters = None):
         """Close the vote in progress (if there is one)
         """
 
@@ -128,4 +134,4 @@ class GrenouilleCRS:
         self.vote_opened = False
         self.vote_heroes = []
 
-        return ['Info : Le vote a été fermé !', 'La cible est désignée est {} ({:.1f}% des voix)'.format(selected_target['name'], 100 * selected_target['votes'] / total_votes)]
+        return ['Info : Le vote a été fermé !', 'La cible est désignée est {} ({:.0f}% des voix)'.format(selected_target['name'], 100 * selected_target['votes'] / total_votes)]
