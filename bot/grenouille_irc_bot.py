@@ -258,6 +258,9 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         return None
 
     def crs(self, sender=None, is_admin=False, parameters=None):
+        if parameters is None:
+            return []
+
         split = parameters.split(' ', 1)
 
         return self.grenouille_bot.grenouille_crs.execute(sender, is_admin, split[0], split[1] if len(split) > 1 else None)
