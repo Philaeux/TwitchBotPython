@@ -64,6 +64,7 @@ class GrenouilleCRS:
         """Open a vote
         """
 
+        # Only mods can open a vote
         if not is_admin:
             return
 
@@ -95,6 +96,7 @@ class GrenouilleCRS:
         """Register a vote
         """
 
+        # Check if vote is opened and well formated
         if (not self.vote_opened) or (parameters is None) or (sender is None):
             return
 
@@ -102,10 +104,11 @@ class GrenouilleCRS:
         if sender in self.vote_voters:
             return ['/w {} Erreur : Désolé, vous avez déjà voté !'.format(sender)]
 
+        # Check if the hero to vote for exists
         hero_to_vote = self.find_hero(parameters)
 
         if hero_to_vote is None:
-            return ['/w {} Erreur : Impossible de trouver le héro {}'.format(sender, parameters)]
+            return ['/w {} Erreur : Impossible de trouver un héro avec le nom {}'.format(sender, parameters)]
 
         for hero in self.vote_heroes:
             if hero_to_vote[0] == hero['id']:
@@ -115,10 +118,13 @@ class GrenouilleCRS:
 
                 return
 
+        return ['/w {} Erreur : le héros pour lequel vous souhaitez voter n\'est pas disponible ! Héros disponibles : {}'.format(sender, ', '.join([hero['name'] for hero in self.vote_heroes]))]
+
     def close(self, sender = None, is_admin = False, parameters = None):
         """Close the vote in progress (if there is one)
         """
 
+        # Only an admin can close the vote
         if not is_admin or not self.vote_opened:
             return
 
@@ -133,5 +139,6 @@ class GrenouilleCRS:
 
         self.vote_opened = False
         self.vote_heroes = []
+        self.vote_voters = []
 
         return ['Info : Le vote a été fermé !', 'La cible est désignée est {} ({:.0f}% des voix)'.format(selected_target['name'], 100 * selected_target['votes'] / total_votes)]
