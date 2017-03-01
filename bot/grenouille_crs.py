@@ -118,7 +118,7 @@ class GrenouilleCRS:
 
                 return
 
-        return ['/w {} Erreur : le héros pour lequel vous souhaitez voter n\'est pas disponible ! Héros disponibles : {}'.format(sender, ', '.join([hero['name'] for hero in self.vote_heroes]))]
+        return ['/w {} Erreur : le héro pour lequel vous souhaitez voter n\'est pas disponible ! Héros disponibles : {}'.format(sender, ', '.join([hero['name'] for hero in self.vote_heroes]))]
 
     def close(self, sender = None, is_admin = False, parameters = None):
         """Close the vote in progress (if there is one)
@@ -141,4 +141,4 @@ class GrenouilleCRS:
         self.vote_heroes = []
         self.vote_voters = []
 
-        return ['Info : Le vote a été fermé !', 'La cible est désignée est {} ({:.0f}% des voix)'.format(selected_target['name'], 100 * selected_target['votes'] / total_votes)]
+        return ['Info : Le vote a été fermé !', 'La cible désignée est {} ({:.0f}% des voix)'.format(selected_target['name'], 100 * selected_target['votes'] / total_votes)]
