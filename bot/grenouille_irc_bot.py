@@ -258,8 +258,9 @@ class GrenouilleIrcBot(irc.bot.SingleServerIRCBot):
         return None
 
     def crs(self, sender=None, is_admin=False, parameters=None):
+        # Command used without parameters
         if parameters is None:
-            return []
+            return ['On a besoin de vos stratégies pour le prochain Chasse, Ragequit & Safari. Donnez vos idées sur bit.ly/taymaproie']
 
         split = parameters.split(' ', 1)
 
