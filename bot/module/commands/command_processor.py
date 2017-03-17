@@ -46,7 +46,7 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor):
             'aliases': ['next'],
             'command': self.next
         }, {
-            'aliases': ['update'],
+            'aliases': ['update', 'u'],
             'command': self.update
         }, {
             'aliases': ['crs'],
