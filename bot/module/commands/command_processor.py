@@ -3,9 +3,10 @@ import logging
 from bot.module.commands.calendar.calendar_processor import CalendarProcessor
 from bot.module.commands.info.info_processor import InfoProcessor
 from bot.module.commands.crs.crs_processor import CrsProcessor
+from bot.module.commands.wiki.wiki_processor import WikiProcessor
 
 
-class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor):
+class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProcessor):
     """Class processing all commands sent into the chat.
 
     Attributes:
@@ -22,6 +23,7 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor):
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
         CrsProcessor.__init__(self)
+        WikiProcessor.__init__(self)
 
         self.grenouille_bot = grenouille_bot
         self.commands = [{
@@ -60,6 +62,9 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor):
         }, {
             'aliases': ['crs_close', 'crsclose', 'crsc'],
             'command': self.crs_close
+        }, {
+            'aliases': ['wiki'],
+            'command': self.wiki
         }]
 
     def process(self, command_line, sender, is_admin):

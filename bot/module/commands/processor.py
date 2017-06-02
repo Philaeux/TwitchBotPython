@@ -16,6 +16,10 @@ class Processor(ABC):
         """Getter for the calendar manager of the processor."""
         return self.grenouille_bot.calendar_manager
 
+    def get_wiki(self):
+        """Getter for the wiki manager of the processor."""
+        return self.grenouille_bot.wiki_manager
+
     def get_commands(self):
         """Getter for the command processor of the bot."""
         return self.grenouille_bot.command_processor

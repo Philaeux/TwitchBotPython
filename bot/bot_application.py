@@ -4,6 +4,7 @@ from configparser import ConfigParser
 from sys import exit
 
 from bot.module.calendar.calendar_manager import CalendarManager
+from bot.module.wiki.wiki_manager import WikiManager
 from bot.module.irc.irc_bot import IrcBot
 from bot.module.webserver.http_server import HttpServer
 from bot.module.commands.command_processor import CommandProcessor
@@ -22,6 +23,7 @@ class GrenouilleBot:
         irc_bot: irc module managing interactions with the chat.
         http_server: thread listening to http requests from other applications.
         calendar_manager: calendar module to interact with google calendar.
+        wiki_manager: wiki module to interact with the Dota 2 Gamepedia
         command_processor: logic to execute irc commands.
     """
 
@@ -40,6 +42,7 @@ class GrenouilleBot:
         self.irc_bot = IrcBot(self)
         self.http_server = HttpServer(self)
         self.calendar_manager = CalendarManager(self)
+        self.wiki_manager = WikiManager(self)
         self.command_processor = CommandProcessor(self)
 
     def start(self):
