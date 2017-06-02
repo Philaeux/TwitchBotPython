@@ -3,7 +3,7 @@ import urllib.parse
 import mwclient
 
 class WikiManager:
-    """The module of the bot responsible for the calendar reading.
+    """The module of the bot responsible for the wiki reading.
 
     Attributes:
         site: The Dota 2 Gamepedia wiki object.
