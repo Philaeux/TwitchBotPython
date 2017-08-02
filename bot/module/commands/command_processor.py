@@ -39,6 +39,9 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProce
             'aliases': ['youtube', 'y'],
             'command': self.youtube
         }, {
+            'aliases': ['instagram', 'i'],
+            'command': self.instagram
+        }, {
             'aliases': ['twitter', 't'],
             'command': self.twitter
         }, {

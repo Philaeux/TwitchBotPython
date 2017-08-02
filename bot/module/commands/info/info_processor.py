@@ -55,6 +55,11 @@ class InfoProcessor(Processor):
         self.get_irc().send_msg('Le YouTube de la FroggedTV : '
                                 'https://www.youtube.com/FroggedTV')
 
+    def instagram(self, param_line, sender, is_admin):
+        """Print the official Instagram account of the FroggedTV"""
+        self.get_irc().send_msg('L\'Instagram de la FroggedTV : '
+                                'https://www.instagram.com/froggedtv')
+
     def twitter(self, param_line, sender, is_admin):
         """Display the Twitter account of the asked streamer."""
         if param_line is not None:
