@@ -27,7 +27,7 @@ class InfoProcessor(Processor):
         for command in self.get_commands().commands:
             command_names.append(command['aliases'][0])
 
-        line = "Les croassements que j'écoute sont: {0}.".format(
+        line = "Les coassements que j'écoute sont: {0}.".format(
             ', '.join(sorted(command_names)))
 
         self.get_irc().send_msg(line)
