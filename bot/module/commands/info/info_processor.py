@@ -29,7 +29,7 @@ class InfoProcessor(Processor):
         for command in self.get_commands().commands:
             command_names.append(command['aliases'][0])
 
-        line = "Les croassements que j'écoute sont: {0}.".format(
+        line = "Les coassements que j'écoute sont: {0}.".format(
             ', '.join(sorted(command_names)))
 
         self.get_irc().send_msg(line)
@@ -65,6 +65,11 @@ class InfoProcessor(Processor):
         """Print the youtube official channel of the FroggedTV"""
         self.get_irc().send_msg('Le YouTube de la FroggedTV : '
                                 'https://www.youtube.com/FroggedTV')
+
+    def instagram(self, param_line, sender, is_admin):
+        """Print the official Instagram account of the FroggedTV"""
+        self.get_irc().send_msg('L\'Instagram de la FroggedTV : '
+                                'https://www.instagram.com/froggedtv')
 
     def twitter(self, param_line, sender, is_admin):
         """Display the Twitter account of the asked streamer."""
