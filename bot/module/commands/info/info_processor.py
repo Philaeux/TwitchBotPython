@@ -10,12 +10,14 @@ class InfoProcessor(Processor):
     Attributes:
         motd_data: message of the day.
         who_data: information about the current streamer.
+        toolmix_data: placeholder for toolmix links.
         twitter_accounts: list of twitter accounts loaded from file
     """
 
     def __init__(self):
         self.motd_data = 'Aucun message.'
         self.who_data = 'Aucune info sur le streamer actuel.'
+        self.toolmix_data = 'Aucun lien.'
         with open(os.path.join(os.path.dirname(__file__),
                                'twitters.json')) as json_data:
             self.twitter_accounts = json.load(json_data)
@@ -49,6 +51,15 @@ class InfoProcessor(Processor):
         if is_admin and param_line is not None:
             self.who_data = 'Streamers actuels: {0}'.format(param_line)
         self.get_irc().send_msg(self.who_data)
+
+    def toolmix(self, param_line, sender, is_admin):
+        """Display toolmix links.
+
+        Only admins are able to change the message.
+        """
+        if is_admin and param_line is not None:
+            self.toolmix_data = param_line
+        self.get_irc().send_msg(self.toolmix_data)
 
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
