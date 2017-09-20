@@ -54,17 +54,8 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProce
             'aliases': ['update', 'u'],
             'command': self.update
         }, {
-            'aliases': ['crs'],
-            'command': self.crs
-        }, {
-            'aliases': ['crs_open', 'crsopen', 'crso'],
-            'command': self.crs_open
-        }, {
-            'aliases': ['crs_vote', 'crsvote', 'crsv'],
-            'command': self.crs_vote
-        }, {
-            'aliases': ['crs_close', 'crsclose', 'crsc'],
-            'command': self.crs_close
+            'aliases': ['toolmix'],
+            'command': self.toolmix
         }, {
             'aliases': ['wiki'],
             'command': self.wiki
