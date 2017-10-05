@@ -53,13 +53,13 @@ class InfoProcessor(Processor):
         self.get_irc().send_msg(self.who_data)
 
     def toolmix(self, param_line, sender, is_admin):
-        """Display toolmix links.
+        """Display toolmix links."""
+        self.get_irc().send_msg('Trouvez des joueurs pour la league FTV https://www.frogged.tv/compte/toolmix/joueur '
+                                'ou directement une team https://www.frogged.tv/compte/toolmix/equipe')
 
-        Only admins are able to change the message.
-        """
-        if is_admin and param_line is not None:
-            self.toolmix_data = param_line
-        self.get_irc().send_msg(self.toolmix_data)
+    def league(self, param_line, sender, is_admin):
+        """Display league links."""
+        self.get_irc().send_msg('Toutes les informations sur la league https://www.frogged.tv/league')
 
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
@@ -72,7 +72,7 @@ class InfoProcessor(Processor):
                                 'https://www.instagram.com/froggedtv')
 
     def twitter(self, param_line, sender, is_admin):
-        """Display the Twitter account of the asked streamer."""
+        """Display the Twitter acco unt of the asked streamer."""
         if param_line is not None:
             twitter = self.find_twitter(param_line.lower())
         else:

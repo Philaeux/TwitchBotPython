@@ -57,6 +57,9 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProce
             'aliases': ['toolmix'],
             'command': self.toolmix
         }, {
+            'aliases': ['league', 'ligue', 'ftvleague', 'ftvligue'],
+            'command': self.league
+        }, {
             'aliases': ['wiki'],
             'command': self.wiki
         }]
