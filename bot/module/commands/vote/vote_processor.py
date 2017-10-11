@@ -71,14 +71,13 @@ class VoteProcessor(Processor):
         total_votes = max(1, len(self.votes))
         vote_counts = [0 for i in self.choices]
         for vote in self.votes.values():
-            vote_counts[vote-1] += 1
+            vote_counts[vote] += 1
 
         sorted_indexes = sorted(range(len(vote_counts)), key=lambda k: vote_counts[k], reverse=True)
 
         line = "Résultats: {}.".format(
-            ', '.join(['{}. {} ({:.1f}%)'.format(index,
-                                                self.choices[index],
-                                                100.0 * vote_counts[index]/total_votes)
+            ', '.join(['{} ({:.1f}%)'.format(self.choices[index],
+                                             100.0 * vote_counts[index]/total_votes)
                        for index in sorted_indexes])
         )
         self.choices = None
