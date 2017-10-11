@@ -71,8 +71,9 @@ class IrcBot(SingleServerIRCBot):
             is_admin = bool(tags['user-type'])
 
         # Check we have a message starting with ! from a user
-        if (len(message) <= 1 or message[0] != '!' or message[1] == ' ' or
-            sender == connection.get_nickname()):
+        if (len(message) <= 1
+            or message[0] != '!'
+            or message[1] == ' ' ):
             return
 
         processor = self.grenouille_bot.command_processor

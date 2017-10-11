@@ -8,10 +8,9 @@ Twitch chat (IRC) bot for the FroggedTV.
 
 ## Commands
 
-- `make build` - build the docker image used.
-- `make bot-run` - start the bot attached to see logs (dev).
-- `make all-start` - start the bot detached (prod).
-- `make all-stop` - stop the bot if detached (prod).
+- `make build` - build the docker image used in prod.
+- `make prod-start` - start the bot detached (prod).
+- `make prod-stop` - stop the bot if detached (prod).
 
 ## About configurations
 

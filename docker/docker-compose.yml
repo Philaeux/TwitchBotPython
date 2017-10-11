@@ -8,8 +8,6 @@ services:
       context: ..
       dockerfile: docker/grenouillebot/Dockerfile
     entrypoint: python3 /grenouillebot/bot/bot_application.py
-    environment:
-        WEBSERVER_PORT: 8083
     ports:
       - "8083:8083"
     network_mode: "host"

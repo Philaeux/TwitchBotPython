@@ -2,11 +2,11 @@ import logging
 
 from bot.module.commands.calendar.calendar_processor import CalendarProcessor
 from bot.module.commands.info.info_processor import InfoProcessor
-from bot.module.commands.crs.crs_processor import CrsProcessor
+from bot.module.commands.vote.vote_processor import VoteProcessor
 from bot.module.commands.wiki.wiki_processor import WikiProcessor
 
 
-class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProcessor):
+class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProcessor):
     """Class processing all commands sent into the chat.
 
     Attributes:
@@ -22,7 +22,7 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProce
         """
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
-        CrsProcessor.__init__(self)
+        VoteProcessor.__init__(self)
         WikiProcessor.__init__(self)
 
         self.grenouille_bot = grenouille_bot
@@ -56,6 +56,18 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, CrsProcessor, WikiProce
         }, {
             'aliases': ['toolmix'],
             'command': self.toolmix
+        }, {
+            'aliases': ['choix',],
+            'command': self.vote
+        }, {
+            'aliases': ['voteopen'],
+            'command': self.vote_open
+        }, {
+            'aliases': ['voteclose'],
+            'command': self.vote_close
+        }, {
+            'aliases': ['voteinfo'],
+            'command': self.vote_info
         }, {
             'aliases': ['ligue', 'ftvleague', 'ftvligue'],
             'command': self.league

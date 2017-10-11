@@ -22,7 +22,9 @@ class HttpServer(Thread):
         """
         Thread.__init__(self)
 
-        self.port = int(os.environ['WEBSERVER_PORT'])
+        config = grenouille_bot.config['DEFAULT']
+
+        self.port = int(config['webserverport'])
         self.server_address = ('127.0.0.1', self.port)
 
         self.httpd = HTTPServer(self.server_address, HTTPServer_RequestHandler)
