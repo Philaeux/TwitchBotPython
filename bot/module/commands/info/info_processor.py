@@ -1,5 +1,6 @@
 import os
 import json
+import random
 
 from bot.module.commands.processor import Processor
 
@@ -18,6 +19,24 @@ class InfoProcessor(Processor):
         self.motd_data = 'Aucun message.'
         self.who_data = 'Aucune info sur le streamer actuel.'
         self.toolmix_data = 'Aucun lien.'
+        self.dota_heroes = ['Abaddon', 'Alchemist', 'Ancient Apparition', 'Anti-Mage', 'Arc Warden', 'Axe', 'Bane',
+                            'Batrider', 'Beastmaster', 'Bloodseeker', 'Bounty Hunter', 'Brewmaster', 'Bristleback',
+                            'Broodmother', 'Centaur Warruner', 'Chaos Knight', 'Chen', 'Clinkz', 'Clockwerk',
+                            'Crystal Maiden', 'Dark Seer', 'Dark Willow', 'Dazzle', 'Death Prophet', 'Disruptor',
+                            'Doom','Dragon Knight', 'Drow Ranger', 'Earth Spirit', 'Earthshaker', 'Elder Titan',
+                            'Ember Spirit', 'Enchantress', 'Enigma', 'Faceless Void', 'Gyrocopter', 'Huskar', 'Invoker',
+                            'Io', 'Jakiro', 'Juggernaut', 'Keeper of the Light', 'Kunkka', 'Legion Commander',
+                            'Leshrac', 'Lich', 'Lifestealer', 'Lina', 'Lion', 'Lone Druid', 'Luna', 'Lycan', 'Magnus',
+                            'Medusa', 'Meepo', 'Mirana', 'Monkey King', 'Morphling', 'Naga Siren', "Nature's Prophet",
+                            'Necrophos', 'Night Stalker', 'Nyx Assassin', 'Ogre Magi', 'Omniknight', 'Oracle',
+                            'Outworld Devourer', 'Pangolier', 'Phantom Assassin', 'Phantom Lancer', 'Phoenix', 'Puck',
+                            'Pudge', 'Pugna', 'Queen of Pain', 'Razor', 'Riki', 'Rubick', 'Sand King', 'Shadow Demon',
+                            'Shadow Fiend', 'Shadow Shaman', 'Silencer', 'Skywrath Mage', 'Slardar', 'Slark', 'Sniper',
+                            'Spectre', 'Spirit Breaker', 'Storm Spirit', 'Sven', 'Techies', 'Templar Assassin',
+                            'Terrorblade', 'Tidehunter', 'Timbersaw', 'Tinker', 'Tiny', 'Treant Protector',
+                            'Troll Warlord', 'Tusk', 'Underlord', 'Undying', 'Ursa', 'Vengeful Spirit', 'Venomancer',
+                            'Viper', 'Visage', 'Warlock', 'Weaver', 'Windranger', 'Winter Wyvern', 'Witch Doctor',
+                            'Wraith King', 'Zeus']
         with open(os.path.join(os.path.dirname(__file__),
                                'twitters.json')) as json_data:
             self.twitter_accounts = json.load(json_data)
@@ -96,3 +115,10 @@ class InfoProcessor(Processor):
                 return twitter_account
 
         return None
+
+
+
+    def random_hero(self, param_line, sender, is_admin):
+        """Random a hero."""
+        hero = random.choice(self.dota_heroes)
+        self.get_irc().send_msg('@{0} has randomed {1}.'.format(sender, hero))

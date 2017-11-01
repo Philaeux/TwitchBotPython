@@ -72,6 +72,9 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
             'aliases': ['ligue', 'ftvleague', 'ftvligue'],
             'command': self.league
         }, {
+            'aliases': ['random'],
+            'command': self.random_hero
+        }, {
             'aliases': ['wiki'],
             'command': self.wiki
         }]
