@@ -42,7 +42,7 @@ class GrenouilleBot:
         self.irc_bot = IrcBot(self)
         self.http_server = HttpServer(self)
         self.calendar_manager = CalendarManager(self)
-        self.wiki_manager = WikiManager(self)
+        # self.wiki_manager = WikiManager(self)
         self.command_processor = CommandProcessor(self)
 
     def start(self):
