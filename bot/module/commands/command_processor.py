@@ -23,7 +23,7 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
         VoteProcessor.__init__(self)
-        WikiProcessor.__init__(self)
+        # WikiProcessor.__init__(self)
 
         self.grenouille_bot = grenouille_bot
         self.commands = [{
@@ -74,9 +74,9 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
         }, {
             'aliases': ['random'],
             'command': self.random_hero
-        }, {
-            'aliases': ['wiki'],
-            'command': self.wiki
+        #}, {
+        #    'aliases': ['wiki'],
+        #    'command': self.wiki
         }]
 
     def process(self, command_line, sender, is_admin):
