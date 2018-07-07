@@ -92,21 +92,23 @@ class CalendarManager:
             events = events_result.get('items', [])
 
             for event in events:
-                start = event['start'].get('dateTime',
-                                           event['start'].get('date'))
-                start = datetime.strptime(''.join(start.rsplit(':', 1)),
-                                          "%Y-%m-%dT%H:%M:%S%z")
-                end = event['end'].get('dateTime',
-                                       event['end'].get('date'))
-                end = datetime.strptime(''.join(end.rsplit(':', 1)),
-                                        "%Y-%m-%dT%H:%M:%S%z")
-                summary = event['summary']
-                new_calendar.append(Event(start, end, summary))
+                try:
+                    summary = event['summary']
+                    start = event['start'].get('dateTime',
+                                               event['start'].get('date'))
+                    start = datetime.strptime(''.join(start.rsplit(':', 1)),
+                                              "%Y-%m-%dT%H:%M:%S%z")
+                    end = event['end'].get('dateTime',
+                                           event['end'].get('date'))
+                    end = datetime.strptime(''.join(end.rsplit(':', 1)),
+                                            "%Y-%m-%dT%H:%M:%S%z")
+                    new_calendar.append(Event(start, end, summary))
+                except Exception:
+                    logging.exception('Error getting one event, skipping')
 
-            self.event_list = new_calendar
+                self.event_list = new_calendar
         except Exception:
-            logging.exception('Error while requesting calendar data, ',
-                              'the calendar is not updated.')
+            logging.exception('Error while requesting calendar data, the calendar is not updated.')
 
         if start_timer:
             self.calendar_timer = threading.Timer(60 * self.g_cal_freq,
