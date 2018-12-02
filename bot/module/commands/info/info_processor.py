@@ -11,32 +11,13 @@ class InfoProcessor(Processor):
     Attributes:
         motd_data: message of the day.
         who_data: information about the current streamer.
-        toolmix_data: placeholder for toolmix links.
         twitter_accounts: list of twitter accounts loaded from file
     """
 
     def __init__(self):
         self.motd_data = 'Aucun message.'
         self.who_data = 'Aucune info sur le streamer actuel.'
-        self.toolmix_data = 'Aucun lien.'
-        self.dota_heroes = ['Abaddon', 'Alchemist', 'Ancient Apparition', 'Anti-Mage', 'Arc Warden', 'Axe', 'Bane',
-                            'Batrider', 'Beastmaster', 'Bloodseeker', 'Bounty Hunter', 'Brewmaster', 'Bristleback',
-                            'Broodmother', 'Centaur Warruner', 'Chaos Knight', 'Chen', 'Clinkz', 'Clockwerk',
-                            'Crystal Maiden', 'Dark Seer', 'Dark Willow', 'Dazzle', 'Death Prophet', 'Disruptor',
-                            'Doom','Dragon Knight', 'Drow Ranger', 'Earth Spirit', 'Earthshaker', 'Elder Titan',
-                            'Ember Spirit', 'Enchantress', 'Enigma', 'Faceless Void', 'Gyrocopter', 'Huskar', 'Invoker',
-                            'Io', 'Jakiro', 'Juggernaut', 'Keeper of the Light', 'Kunkka', 'Legion Commander',
-                            'Leshrac', 'Lich', 'Lifestealer', 'Lina', 'Lion', 'Lone Druid', 'Luna', 'Lycan', 'Magnus',
-                            'Medusa', 'Meepo', 'Mirana', 'Monkey King', 'Morphling', 'Naga Siren', "Nature's Prophet",
-                            'Necrophos', 'Night Stalker', 'Nyx Assassin', 'Ogre Magi', 'Omniknight', 'Oracle',
-                            'Outworld Devourer', 'Pangolier', 'Phantom Assassin', 'Phantom Lancer', 'Phoenix', 'Puck',
-                            'Pudge', 'Pugna', 'Queen of Pain', 'Razor', 'Riki', 'Rubick', 'Sand King', 'Shadow Demon',
-                            'Shadow Fiend', 'Shadow Shaman', 'Silencer', 'Skywrath Mage', 'Slardar', 'Slark', 'Sniper',
-                            'Spectre', 'Spirit Breaker', 'Storm Spirit', 'Sven', 'Techies', 'Templar Assassin',
-                            'Terrorblade', 'Tidehunter', 'Timbersaw', 'Tinker', 'Tiny', 'Treant Protector',
-                            'Troll Warlord', 'Tusk', 'Underlord', 'Undying', 'Ursa', 'Vengeful Spirit', 'Venomancer',
-                            'Viper', 'Visage', 'Warlock', 'Weaver', 'Windranger', 'Winter Wyvern', 'Witch Doctor',
-                            'Wraith King', 'Zeus']
+
         with open(os.path.join(os.path.dirname(__file__),
                                'twitters.json')) as json_data:
             self.twitter_accounts = json.load(json_data)
@@ -71,24 +52,10 @@ class InfoProcessor(Processor):
             self.who_data = 'Streamers actuels: {0}'.format(param_line)
         self.get_irc().send_msg(self.who_data)
 
-    def toolmix(self, param_line, sender, is_admin):
-        """Display toolmix links."""
-        self.get_irc().send_msg('Trouvez des joueurs pour la league FTV https://www.frogged.tv/compte/toolmix/joueur '
-                                'ou directement une team https://www.frogged.tv/compte/toolmix/equipe')
-
-    def league(self, param_line, sender, is_admin):
-        """Display league links."""
-        self.get_irc().send_msg('Toutes les informations sur la league https://www.frogged.tv/league')
-
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
-        self.get_irc().send_msg('Le YouTube de la FroggedTV : '
-                                'https://www.youtube.com/FroggedTV')
-
-    def instagram(self, param_line, sender, is_admin):
-        """Print the official Instagram account of the FroggedTV"""
-        self.get_irc().send_msg('L\'Instagram de la FroggedTV : '
-                                'https://www.instagram.com/froggedtv')
+        self.get_irc().send_msg('Le YouTube de la FroggedTV : ' +
+                                self.get_grenouille().config['DEFAULT']['youtube_url'])
 
     def twitter(self, param_line, sender, is_admin):
         """Display the Twitter acco unt of the asked streamer."""
@@ -115,10 +82,3 @@ class InfoProcessor(Processor):
                 return twitter_account
 
         return None
-
-
-
-    def random_hero(self, param_line, sender, is_admin):
-        """Random a hero."""
-        hero = random.choice(self.dota_heroes)
-        self.get_irc().send_msg('@{0} has randomed {1}.'.format(sender, hero))

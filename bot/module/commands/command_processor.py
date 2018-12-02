@@ -22,12 +22,10 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
         """
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
-        VoteProcessor.__init__(self)
-        # WikiProcessor.__init__(self)
 
         self.grenouille_bot = grenouille_bot
         self.commands = [{
-            'aliases': ['grenouille', 'help', 'aide'],
+            'aliases': ['help', 'aide', 'h'],
             'command': self.help
         }, {
             'aliases': ['motd', 'mdj'],
@@ -39,44 +37,17 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
             'aliases': ['youtube', 'y'],
             'command': self.youtube
         }, {
-            'aliases': ['instagram', 'i'],
-            'command': self.instagram
-        }, {
             'aliases': ['twitter', 't'],
             'command': self.twitter
         }, {
-            'aliases': ['now'],
+            'aliases': ['now', 'maintenant', 'm'],
             'command': self.now
         }, {
-            'aliases': ['next'],
+            'aliases': ['next', 'suivant', 's'],
             'command': self.next
         }, {
             'aliases': ['update', 'u'],
             'command': self.update
-        }, {
-            'aliases': ['toolmix'],
-            'command': self.toolmix
-        }, {
-            'aliases': ['choix',],
-            'command': self.vote
-        }, {
-            'aliases': ['voteopen'],
-            'command': self.vote_open
-        }, {
-            'aliases': ['voteclose'],
-            'command': self.vote_close
-        }, {
-            'aliases': ['voteinfo'],
-            'command': self.vote_info
-        }, {
-            'aliases': ['ligue', 'ftvleague', 'ftvligue'],
-            'command': self.league
-        }, {
-            'aliases': ['random'],
-            'command': self.random_hero
-        #}, {
-        #    'aliases': ['wiki'],
-        #    'command': self.wiki
         }]
 
     def process(self, command_line, sender, is_admin):

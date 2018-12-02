@@ -4,15 +4,12 @@ from configparser import ConfigParser
 from sys import exit
 
 from bot.module.calendar.calendar_manager import CalendarManager
-from bot.module.wiki.wiki_manager import WikiManager
 from bot.module.irc.irc_bot import IrcBot
-from bot.module.webserver.http_server import HttpServer
 from bot.module.commands.command_processor import CommandProcessor
 
 # Logs
 logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s',
                     level=logging.INFO)
-
 
 class GrenouilleBot:
     """The Master class for the GrenouilleBot, holding all modules.
@@ -40,23 +37,18 @@ class GrenouilleBot:
 
         # Modules
         self.irc_bot = IrcBot(self)
-        self.http_server = HttpServer(self)
         self.calendar_manager = CalendarManager(self)
-        # self.wiki_manager = WikiManager(self)
         self.command_processor = CommandProcessor(self)
 
     def start(self):
         """Start all independent modules."""
         self.calendar_manager.start()
-        self.http_server.start()
         self.irc_bot.start()
 
     def stop(self):
         """Stop the running GrenouilleBot by stopping all actors. Shutdown."""
         self.calendar_manager.stop()
         self.irc_bot.stop()
-        self.http_server.stop()
-
 
 # Start if main script
 if __name__ == '__main__':
