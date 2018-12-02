@@ -1,9 +1,9 @@
 version: "2"
 
 services:
-  grenouillebot:
-    image: grenouillebot
-    container_name: "grenouillebot"
+  TwitchBotPython:
+    image: TwitchBotPython
+    container_name: "TwitchBotPython"
     build:
       context: ..
       dockerfile: docker/grenouillebot/Dockerfile
