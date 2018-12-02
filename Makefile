@@ -17,11 +17,10 @@ dev-clean:
 # Prod docker
 
 build:
-	docker-compose -p grenouillebot -f docker/docker-compose.yml build
-
-prod-stop:
-	-docker stop grenouillebot
-	-docker rm grenouillebot
+	docker-compose -f docker/docker-compose.yml build
 
 prod-start:
-	docker-compose -p grenouillebot -f docker/docker-compose.yml up -d --build
+	docker-compose -f docker/docker-compose.yml up -d --build
+
+prod-stop:
+	docker-compose -f docker/docker-compose.yml down
