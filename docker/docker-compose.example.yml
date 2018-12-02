@@ -1,13 +1,10 @@
 version: "2"
 
 services:
-  TwitchBotPython:
-    image: TwitchBotPython
-    container_name: "TwitchBotPython"
+  twitchbotpython:
+    image: twitchbotpython
+    container_name: "twitchbotpython"
     build:
       context: ..
       dockerfile: docker/grenouillebot/Dockerfile
     entrypoint: python3 /grenouillebot/bot/bot_application.py
-    ports:
-      - "8083:8083"
-    network_mode: "host"

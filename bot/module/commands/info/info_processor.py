@@ -29,8 +29,7 @@ class InfoProcessor(Processor):
         for command in self.get_commands().commands:
             command_names.append(command['aliases'][0])
 
-        line = "Les coassements que j'écoute sont: {0}.".format(
-            ', '.join(sorted(command_names)))
+        line = "Les commandes sont: {0}.".format(', '.join(sorted(command_names)))
 
         self.get_irc().send_msg(line)
 
@@ -54,7 +53,7 @@ class InfoProcessor(Processor):
 
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
-        self.get_irc().send_msg('Le YouTube de la FroggedTV : ' +
+        self.get_irc().send_msg('Le YouTube de la chaîne est: ' +
                                 self.get_grenouille().config['DEFAULT']['youtube_url'])
 
     def twitter(self, param_line, sender, is_admin):
@@ -65,7 +64,7 @@ class InfoProcessor(Processor):
             twitter = self.find_twitter('froggedtv')
 
         if twitter is not None:
-            line = '{0} : {1}'.format(twitter['pretty_name'], twitter['link'])
+            line = '{0}: {1}'.format(twitter['pretty_name'], twitter['link'])
             self.get_irc().send_msg(line)
 
     def find_twitter(self, name):
