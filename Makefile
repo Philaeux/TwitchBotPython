@@ -14,6 +14,17 @@ dev-run:
 dev-clean:
 	rm -rf .venv
 
+# DATABASE
+
+db-upgrade:
+	cd bot && ../.venv/bin/alembic upgrade head
+
+db-downgrade:
+	cd bot && ../.venv/bin/alembic downgrade -1
+
+db-migrate:
+	cd bot && ../.venv/bin/alembic revision --autogenerate
+
 # Prod docker
 
 build:

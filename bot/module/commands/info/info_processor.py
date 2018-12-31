@@ -22,6 +22,29 @@ class InfoProcessor(Processor):
                                'twitters.json')) as json_data:
             self.twitter_accounts = json.load(json_data)
 
+        self.commands.extend([{
+                'aliases': ['help', 'aide', 'h'],
+                'command': self.help
+            }, {
+                'aliases': ['who', 'qui'],
+                'command': self.who
+            }])
+        if self.bot.config['TWITTER'].getboolean('enabled', False):
+            self.commands.append({
+                'aliases': ['twitter', 't'],
+                'command': self.twitter
+            })
+        if self.bot.config['MOTD'].getboolean('enabled', False):
+            self.commands.append({
+                'aliases': ['motd', 'mdj'],
+                'command': self.motd
+            })
+        if self.bot.config['YOUTUBE'].getboolean('enabled', False):
+            self.commands.append({
+                'aliases': ['youtube', 'y'],
+                'command': self.youtube
+            })
+
     def help(self, param_line, sender, is_admin):
         """Returns all the commands the bot is listening to."""
         command_names = []
@@ -54,7 +77,7 @@ class InfoProcessor(Processor):
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
         self.get_irc().send_msg('Le YouTube de la chaîne est: ' +
-                                self.get_grenouille().config['DEFAULT']['youtube_url'])
+                                self.get_grenouille().config['YOUTUBE']['youtube_url'])
 
     def twitter(self, param_line, sender, is_admin):
         """Display the Twitter acco unt of the asked streamer."""

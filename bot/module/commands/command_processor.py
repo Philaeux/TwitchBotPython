@@ -4,51 +4,30 @@ from bot.module.commands.calendar.calendar_processor import CalendarProcessor
 from bot.module.commands.info.info_processor import InfoProcessor
 from bot.module.commands.vote.vote_processor import VoteProcessor
 from bot.module.commands.wiki.wiki_processor import WikiProcessor
+from bot.module.commands.bet.bet_processor import BetProcessor
 
 
-class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProcessor):
+class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProcessor, BetProcessor):
     """Class processing all commands sent into the chat.
 
     Attributes:
-        grenouille_bot: master class with all modules.
+        bot: master class with all modules.
         commands: list of all commands managed by the command processor.
 
     """
-    def __init__(self, grenouille_bot):
+    def __init__(self, bot):
         """Define all commands the bot will process.
 
         Args:
-            grenouille_bot: master class with all modules.
+            bot: master class with all modules.
         """
+
+        self.bot = bot
+        self.commands = []
+
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
-
-        self.grenouille_bot = grenouille_bot
-        self.commands = [{
-            'aliases': ['help', 'aide', 'h'],
-            'command': self.help
-        }, {
-            'aliases': ['motd', 'mdj'],
-            'command': self.motd
-        }, {
-            'aliases': ['who', 'qui'],
-            'command': self.who
-        }, {
-            'aliases': ['youtube', 'y'],
-            'command': self.youtube
-        }, {
-            'aliases': ['twitter', 't'],
-            'command': self.twitter
-        }, {
-            'aliases': ['now', 'maintenant', 'm'],
-            'command': self.now
-        }, {
-            'aliases': ['next', 'suivant', 's'],
-            'command': self.next
-        }, {
-            'aliases': ['update', 'u'],
-            'command': self.update
-        }]
+        BetProcessor.__init__(self)
 
     def process(self, command_line, sender, is_admin):
         """Process a command.

@@ -5,7 +5,17 @@ class CalendarProcessor(Processor):
     """Processor for all calendar commands."""
 
     def __init__(self):
-        pass
+        if self.bot.config['CALENDAR'].getboolean('enabled', False):
+            self.commands.extend([{
+                'aliases': ['now', 'maintenant', 'm'],
+                'command': self.now
+            }, {
+                'aliases': ['next', 'suivant', 's'],
+                'command': self.next
+            }, {
+                'aliases': ['update', 'u'],
+                'command': self.update
+            }])
 
     def next(self, param_line, sender, is_admin):
         """Display the next event from the calendar."""
