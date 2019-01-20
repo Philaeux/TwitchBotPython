@@ -41,8 +41,7 @@ class IrcBot(SingleServerIRCBot):
         self.last_ping = datetime.utcnow()
 
     def stop(self):
-        pass
-        # TODO - Safely shutdown the thread
+        self.disconnect()
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server. Setup config."""

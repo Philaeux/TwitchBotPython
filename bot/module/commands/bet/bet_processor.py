@@ -2,6 +2,7 @@ import os
 import sqlite3
 import logging
 import math
+from operator import itemgetter
 
 from bot.module.commands.processor import Processor
 from bot.models.Points import UserPoints
@@ -18,6 +19,7 @@ class BetProcessor(Processor):
         self.bets = None
         self.is_open = False
         self.total = [0, 0]
+        self.cotes = [1.5, 1.5]
 
         if self.bot.config['BET'].getboolean('enabled', False):
             self.commands.extend([{
@@ -66,17 +68,30 @@ class BetProcessor(Processor):
                 return
             self.is_open = False
             self.total = [0, 0]
+            self.cotes = [1, 1]
             for i in range(0, 2):
                 for better in self.bets[i]:
                     self.total[i] += self.bets[i][better][1]
-            self.get_irc().send_msg('Fin des bets: {0} win de {2} points et {1} lose de {3} points monkaHmm'.format(
-                len(self.bets[0]), len(self.bets[1]), self.total[0], self.total[1]
+
+            if self.total[0] != 0:
+                self.cotes[0] += float(self.total[1] + 10)/self.total[0]
+            else:
+                self.cotes[0] = 0
+
+
+            if self.total[1] != 0:
+                self.cotes[1] += float(self.total[0] + 10)/self.total[1]
+            else:
+                self.cotes[1] = 0
+
+            self.get_irc().send_msg('Fin des bets [W|L]: [{0}|{1}] bets, [{2}|{3}] points, retour sur mise de [{4:.2f}|{5:.2f}] monkaHmm'.format(
+                len(self.bets[0]), len(self.bets[1]), self.total[0], self.total[1], self.cotes[0], self.cotes[1]
             ))
         elif params[0].lower() in ['win', 'lose']:
             if not self.is_open:
                 return
             if len(params) != 2: return
-            if not(params[1].lower() == 'all' or params[1].isdigit()): return
+            if not(params[1].lower() == 'all' or params[1].isdigit()) or params[1] == '0': return
 
             index = 0 if params[0].lower() == 'win' else 1
             counter_index = (index + 1) % 2
@@ -89,12 +104,15 @@ class BetProcessor(Processor):
                 points = UserPoints(sender, 1)
                 session.add(points)
                 session.commit()
-            to_add = points.points
-            if params[1].isdigit():
-                to_add = min(int(params[1]), points.points)
-            self.bets[index][sender] = [points.points, to_add]
+            if params[1].lower() == 'all':
+                bet_value = points.points
+            else:
+                bet_value = min(int(params[1]), points.points)
+            bet_value = max(1, bet_value)
 
-            self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, to_add, params[0].lower()))
+            self.bets[index][sender] = [points.points, bet_value]
+
+            self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
 
         elif params[0] == 'result':
             if not is_admin:
@@ -107,19 +125,42 @@ class BetProcessor(Processor):
             index = 0 if params[1].lower() == 'win' else 1
             counter_index = (index + 1) % 2
 
+            losers = []
+            winners = []
+
             session = self.get_bot().database_sessions()
             for better in self.bets[counter_index]:
                 points = session.query(UserPoints).filter(UserPoints.username == better).one_or_none()
-                points.points = self.bets[counter_index][better][0] - self.bets[counter_index][better][1]
-
+                points.points = max(self.bets[counter_index][better][0] - self.bets[counter_index][better][1], 0)
+                losers.append({ 'name': better, 'value': points.points - self.bets[counter_index][better][0] })
             for better in self.bets[index]:
                 points = session.query(UserPoints).filter(UserPoints.username == better).one_or_none()
-                points.points += 1
-                if self.total[index]!= 0:
-                    points.points += math.ceil(self.bets[index][better][1] * self.total[counter_index] / self.total[index])
+                points.points += math.ceil((self.cotes[index]-1)*self.bets[index][better][1])
+                winners.append({ 'name': better, 'value': points.points - self.bets[index][better][0] })
             session.commit()
-            self.bets = None
 
+            winners.sort(key=itemgetter('value'), reverse=True)
+            if len(winners) > 3: winners = winners[:3]
+            losers.sort(key=itemgetter('value'))
+            if len(losers) > 3: losers = losers[:3]
+
+            if len(winners) == 0:
+                self.get_irc().send_msg("Top pertes: {0}".format(
+                    ', '.join(['{0} ({1})'.format(x['name'], x['value']) for x in losers])
+                ))
+            elif len(losers) == 0:
+                self.get_irc().send_msg("Top gains: {0}".format(
+                    ', '.join(['{0} (+{1})'.format(x['name'], x['value']) for x in winners])
+                ))
+            else:
+                self.get_irc().send_msg("Tops: {0} / {1}".format(
+                    ', '.join(['{0} (+{1})'.format(x['name'], x['value']) for x in winners]),
+                    ', '.join(['{0} ({1})'.format(x['name'], x['value']) for x in losers])
+                ))
+
+            self.bets = None
+            self.total = [0, 0]
+            self.cotes = [1.5, 1.5]
 
     def points(self, param_line, sender, is_admin):
         """Returns players points."""

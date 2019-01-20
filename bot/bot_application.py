@@ -1,5 +1,6 @@
 import logging
 import os
+from signal import signal, SIGINT, SIGTERM
 from configparser import ConfigParser
 from sys import exit
 from sqlalchemy import create_engine
@@ -54,7 +55,13 @@ class Bot:
         """Stop the running bot by stopping all actors. Shutdown."""
         self.calendar_manager.stop()
         self.irc_bot.stop()
+        exit(0)
 
 # Start if main script
 if __name__ == '__main__':
-    Bot().start()
+    bot = Bot()
+    bot.start()
+
+    signal(SIGINT, bot.stop)
+    signal(SIGTERM, bot.stop)
+
