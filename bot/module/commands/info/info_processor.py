@@ -77,7 +77,7 @@ class InfoProcessor(Processor):
     def youtube(self, param_line, sender, is_admin):
         """Print the youtube official channel of the FroggedTV"""
         self.get_irc().send_msg('Le YouTube de la chaîne est: ' +
-                                self.get_grenouille().config['YOUTUBE']['youtube_url'])
+                                self.get_bot().config['YOUTUBE']['youtube_url'])
 
     def twitter(self, param_line, sender, is_admin):
         """Display the Twitter acco unt of the asked streamer."""
