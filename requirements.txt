@@ -1,3 +1,5 @@
 google-api-python-client
 irc
 mwclient
+SQLAlchemy
+Alembic

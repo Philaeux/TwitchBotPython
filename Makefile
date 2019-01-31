@@ -1,26 +1,26 @@
 # Dev tests without docker
 
-dev-install:
+install:
 	virtualenv -p python3 .venv
 	.venv/bin/pip3 install -r requirements.txt
-	make dev-path-install
+	make path-install
 
-dev-path-install:
+path-install:
 	$(foreach dir, $(wildcard .venv/lib/*), echo $(shell pwd) > $(dir)/site-packages/grenouillebot.pth &&) echo
 
-dev-run:
+run:
 	.venv/bin/python3 bot/bot_application.py
 
-dev-clean:
+clean:
 	rm -rf .venv
 
-# Prod docker
+# DATABASE
 
-build:
-	docker-compose -f docker/docker-compose.yml build
+db-upgrade:
+	cd bot && ../.venv/bin/alembic upgrade head
 
-prod-start:
-	docker-compose -f docker/docker-compose.yml up -d --build
+db-downgrade:
+	cd bot && ../.venv/bin/alembic downgrade -1
 
-prod-stop:
-	docker-compose -f docker/docker-compose.yml down
+db-migrate:
+	cd bot && ../.venv/bin/alembic revision --autogenerate

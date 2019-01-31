@@ -1,8 +1,0 @@
-.gitattributes
-.dockerignore
-.gitignore
-LICENSE
-Makefile
-README.md
-
-docker/*

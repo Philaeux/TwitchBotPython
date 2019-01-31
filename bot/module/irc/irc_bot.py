@@ -14,6 +14,7 @@ class IrcBot(SingleServerIRCBot):
     channel or a private message to a user.
 
     Attributes:
+        enabled: Is the module enabled.
         grenouille_bot: master class.
         sanitizer: thread checking every 3 minutes to check if the bot is
             still alive.
@@ -22,7 +23,11 @@ class IrcBot(SingleServerIRCBot):
 
     def __init__(self, grenouille_bot):
         self.grenouille_bot = grenouille_bot
-        config = grenouille_bot.config['DEFAULT']
+        config = grenouille_bot.config['IRC']
+
+        self.enabled = config.getboolean('enabled', False)
+        if not self.enabled:
+            return
 
         nickname = config['nickname']
         server = 'irc.chat.twitch.tv'
@@ -36,8 +41,7 @@ class IrcBot(SingleServerIRCBot):
         self.last_ping = datetime.utcnow()
 
     def stop(self):
-        pass
-        # TODO - Safely shutdown the thread
+        self.disconnect()
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server. Setup config."""
@@ -69,6 +73,8 @@ class IrcBot(SingleServerIRCBot):
         is_admin = False
         if 'user-type' in tags:
             is_admin = bool(tags['user-type'])
+        if sender == self.channel[1:]:
+            is_admin = True
 
         # Check we have a message starting with ! from a user
         if (len(message) <= 1

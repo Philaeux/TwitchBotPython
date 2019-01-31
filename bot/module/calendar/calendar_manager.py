@@ -38,6 +38,7 @@ class CalendarManager:
     """The module of the bot responsible for the calendar reading.
 
     Attributes:
+        enabled: Is the calendar module enabled.
         g_cal_key: Key to the Google calendar API.
         g_cal_id: Id of the Google calendar to read.
         g_cal_freq: int minutes between updates.
@@ -52,23 +53,32 @@ class CalendarManager:
         Args:
             grenouille_bot: master class.
         """
-        config = grenouille_bot.config['DEFAULT']
+        config = grenouille_bot.config['CALENDAR']
 
-        self.g_cal_key = config['g_cal_key']
-        self.g_cal_id = config['g_cal_id']
-        self.g_cal_freq = int(config['g_cal_freq'])
+        self.enabled = config.getboolean('enabled', False)
+        if not self.enabled:
+            return
+
+        self.g_cal_key = config['google_api_key']
+        self.g_cal_id = config['google_calendar_id']
+        self.g_cal_freq = int(config['refresh_frequency'])
         self.calendar_timer = None
 
         self.event_list = []
 
     def start(self):
         """Start the GrenouilleCalendar module periodic update process."""
-        self.calendar_timer = threading.Timer(10,
-                                              self.update_events_from_calendar)
+        if not self.enabled:
+            return
+
+        self.calendar_timer = threading.Timer(10, self.update_events_from_calendar)
         self.calendar_timer.start()
 
     def stop(self):
         """Stop the GrenouilleCalendar module by canceling any process."""
+        if not self.enabled:
+            return
+
         self.calendar_timer.cancel()
 
     def update_events_from_calendar(self, start_timer=True):
