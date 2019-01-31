@@ -12,7 +12,7 @@ Twitch chat (IRC) bot.
 
 ## Prod
 
-Setup a `systemd` service by creating a file similar to `prod/twitchbot.service` into `/lib/systemd/system/`. 
+Setup a `systemd` service by creating a file similar to `prod/twitchbot.service` into `/etc/systemd/system/`. 
 
 CHMOD it to 644.
 
