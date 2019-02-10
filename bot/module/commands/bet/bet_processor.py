@@ -17,6 +17,11 @@ class BetProcessor(Processor):
 
     def __init__(self):
         self.status = 'BET_READY'
+        self.bet_type = 'PLAYER'
+        self.bet_choices = {
+            'PLAYER': ['win', 'lose'],
+            'SPECTATOR': ['radiant', 'dire']
+        }
         self.bets = None
         self.total = [0, 0]
         self.cotes = [1, 1]
@@ -54,9 +59,13 @@ class BetProcessor(Processor):
             if self.status != 'BET_READY':
                 self.get_irc().send_msg('Bet non disponible, annulez ou complétez les bets en cours DansGame')
                 return
+            if len(params) == 2 and params[1] == 'spec':
+                self.bet_type = 'SPECTATOR'
+            else:
+                self.bet_type = 'PLAYER'
             self.bets = [{}, {}]
             self.status = 'BET_OPEN'
-            self.get_irc().send_msg('Bet ouvert, utilisez "!bet win/lose X" PogChamp')
+            self.get_irc().send_msg('Bet ouvert, utilisez "!bet {0} X" PogChamp'.format('/'.join(self.bet_choices[self.bet_type])))
         elif params[0] == 'cancel':
             if not is_admin:
                 return
@@ -89,16 +98,16 @@ class BetProcessor(Processor):
             else:
                 self.cotes[1] = 0
 
-            self.get_irc().send_msg('Fin des bets [W|L]: [{0}|{1}] bets, [{2}|{3}] points, retour sur mise de [{4:.2f}|{5:.2f}] monkaHmm'.format(
+            self.get_irc().send_msg('Fin des bets: [{0}|{1}] bets, [{2}|{3}] points, retour sur mise de [{4:.2f}|{5:.2f}] monkaHmm'.format(
                 len(self.bets[0]), len(self.bets[1]), self.total[0], self.total[1], self.cotes[0], self.cotes[1]
             ))
-        elif params[0].lower() in ['win', 'lose']:
+        elif params[0].lower() in self.bet_choices[self.bet_type]:
             if self.status != 'BET_OPEN':
                 return
             if len(params) != 2: return
             if not(params[1].lower() == 'all' or params[1].isdigit()) or params[1] == '0': return
 
-            index = 0 if params[0].lower() == 'win' else 1
+            index = 0 if params[0].lower() in ['win', 'radiant'] else 1
             counter_index = (index + 1) % 2
             if sender in self.bets[counter_index]:
                 self.bets[counter_index].pop(sender)
@@ -123,9 +132,9 @@ class BetProcessor(Processor):
             if self.status != 'BET_WAITING_RESULT':
                 return
             if len(params) != 2: return
-            if params[1].lower() not in ['win', 'lose']: return
+            if params[1].lower() not in self.bet_choices[self.bet_type]: return
 
-            index = 0 if params[1].lower() == 'win' else 1
+            index = 0 if params[1].lower() in ['win', 'radiant'] else 1
             counter_index = (index + 1) % 2
 
             losers = []
