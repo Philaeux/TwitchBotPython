@@ -16,10 +16,10 @@ class BetProcessor(Processor):
     """
 
     def __init__(self):
+        self.status = 'BET_READY'
         self.bets = None
-        self.is_open = False
         self.total = [0, 0]
-        self.cotes = [1.5, 1.5]
+        self.cotes = [1, 1]
 
         if self.bot.config['BET'].getboolean('enabled', False):
             self.commands.extend([{
@@ -51,22 +51,28 @@ class BetProcessor(Processor):
         if params[0] == 'open':
             if not is_admin:
                 return
-            if self.bets is not None:
+            if self.status != 'BET_READY':
                 self.get_irc().send_msg('Bet non disponible, annulez ou complétez les bets en cours DansGame')
                 return
             self.bets = [{}, {}]
-            self.is_open = True
+            self.status = 'BET_OPEN'
             self.get_irc().send_msg('Bet ouvert, utilisez "!bet win/lose X" PogChamp')
         elif params[0] == 'cancel':
             if not is_admin:
                 return
+            if self.status == 'BET_READY':
+                return
             self.bets = None
-            self.is_open = False
+            self.status = 'BET_READY'
+            self.total = [0, 0]
+            self.cotes = [1, 1]
             self.get_irc().send_msg('Bet annulés Jebaited')
         elif params[0] == 'close':
             if not is_admin:
                 return
-            self.is_open = False
+            if self.status != 'BET_OPEN':
+                return
+            self.status = 'BET_WAITING_RESULT'
             self.total = [0, 0]
             self.cotes = [1, 1]
             for i in range(0, 2):
@@ -78,7 +84,6 @@ class BetProcessor(Processor):
             else:
                 self.cotes[0] = 0
 
-
             if self.total[1] != 0:
                 self.cotes[1] += float(self.total[0] + 10)/self.total[1]
             else:
@@ -88,7 +93,7 @@ class BetProcessor(Processor):
                 len(self.bets[0]), len(self.bets[1]), self.total[0], self.total[1], self.cotes[0], self.cotes[1]
             ))
         elif params[0].lower() in ['win', 'lose']:
-            if not self.is_open:
+            if self.status != 'BET_OPEN':
                 return
             if len(params) != 2: return
             if not(params[1].lower() == 'all' or params[1].isdigit()) or params[1] == '0': return
@@ -111,13 +116,11 @@ class BetProcessor(Processor):
             bet_value = max(1, bet_value)
 
             self.bets[index][sender] = [points.points, bet_value]
-
             self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
-
         elif params[0] == 'result':
             if not is_admin:
                 return
-            if self.is_open or self.bets is None:
+            if self.status != 'BET_WAITING_RESULT':
                 return
             if len(params) != 2: return
             if params[1].lower() not in ['win', 'lose']: return
@@ -158,9 +161,20 @@ class BetProcessor(Processor):
                     ', '.join(['{0} ({1})'.format(x['name'], x['value']) for x in losers])
                 ))
 
+            self.status = 'BET_READY'
             self.bets = None
             self.total = [0, 0]
-            self.cotes = [1.5, 1.5]
+            self.cotes = [1, 1]
+        elif params[0] == 'reset_database':
+            if not is_admin:
+                return
+            if self.status != 'BET_READY':
+                self.get_irc().send_msg("Impossible de nettoyer la matrice lorsqu'un bet est en cours Pepega")
+                return
+            session = self.get_bot().database_sessions()
+            session.query(UserPoints).delete()
+            session.commit()
+            self.get_irc().send_msg("Un modo a reset les points NotLikeThis")
 
     def points(self, param_line, sender, is_admin):
         """Returns players points."""
