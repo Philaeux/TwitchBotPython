@@ -110,7 +110,7 @@ class BetProcessor(Processor):
             index = 0 if params[0].lower() in ['win', 'radiant'] else 1
             counter_index = (index + 1) % 2
             if sender in self.bets[counter_index]:
-                self.bets[counter_index].pop(sender)
+                return
 
             session = self.get_bot().database_sessions()
             points = session.query(UserPoints).filter(UserPoints.username == sender).one_or_none()
@@ -124,7 +124,11 @@ class BetProcessor(Processor):
                 bet_value = min(int(params[1]), points.points)
             bet_value = max(1, bet_value)
 
-            self.bets[index][sender] = [points.points, bet_value]
+            if sender in self.bets[index] and self.bets[index][sender][1] >= bet_value:
+                return
+            else:
+                self.bets[index][sender] = [points.points, bet_value]
+
             self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
         elif params[0] == 'result':
             if not is_admin:
