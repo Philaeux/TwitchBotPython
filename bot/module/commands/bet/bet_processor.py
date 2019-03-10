@@ -40,12 +40,21 @@ class BetProcessor(Processor):
 
     def top(self, param_line, sender, is_admin):
         """Display top 5 betters."""
-
         session = self.get_bot().database_sessions()
         top_result = []
-        for points in session.query(UserPoints).order_by(UserPoints.points.desc()).limit(5):
-            top_result.append('{0} ({1})'.format(points.username, points.points))
-        self.get_irc().send_msg('Les meilleurs oracles sont {0}'.format(', '.join(top_result)))
+        if param_line is None:
+            for points in session.query(UserPoints).order_by(UserPoints.points.desc()).limit(5):
+                top_result.append('{0} ({1})'.format(points.username, points.points))
+            self.get_irc().send_msg('Les meilleurs oracles sont {0}'.format(', '.join(top_result)))
+        else:
+            if not is_admin or not param_line.isdigit():
+                return
+            offset = int(param_line)
+            for points in session.query(UserPoints).order_by(UserPoints.points.desc()).offset(offset).limit(5):
+                top_result.append('{0} ({1})'.format(points.username, points.points))
+            if len(top_result) == 0:
+                return
+            self.get_irc().send_msg('Les oracles {0} à {1} sont {2}'.format(offset, offset+len(top_result), ', '.join(top_result)))
 
     def bet(self, param_line, sender, is_admin):
         """Register a bet of a user."""
@@ -129,7 +138,8 @@ class BetProcessor(Processor):
             else:
                 self.bets[index][sender] = [points.points, bet_value]
 
-            self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
+            # Too much bets make it impossible for the bot to send that much private messages.
+            # self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
         elif params[0] == 'result':
             if not is_admin:
                 return
@@ -191,12 +201,25 @@ class BetProcessor(Processor):
 
     def points(self, param_line, sender, is_admin):
         """Returns players points."""
-        session = self.get_bot().database_sessions()
-        points = session.query(UserPoints).filter(UserPoints.username == sender).one_or_none()
-        if points is None:
-            points = UserPoints(sender, 1)
-            session.add(points)
-            session.commit()
+        if param_line is None:
+            session = self.get_bot().database_sessions()
+            points = session.query(UserPoints).filter(UserPoints.username == sender).one_or_none()
+            if points is None:
+                points = UserPoints(sender, 1)
+                session.add(points)
+                session.commit()
 
-        self.get_irc().send_msg("/w {0} Vous avez {1} points.".format(sender, points.points))
+            self.get_irc().send_msg("/w {0} Vous avez {1} points.".format(sender, points.points))
+        else:
+            if not is_admin:
+                return
+            player = param_line.lower()
+            session = self.get_bot().database_sessions()
+            points = session.query(UserPoints).filter(UserPoints.username == player).one_or_none()
+            if points is None:
+                return
+            else:
+                self.get_irc().send_msg("{0} a {1} points.".format(param_line, points.points))
+
+
 
