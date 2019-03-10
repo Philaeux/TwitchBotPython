@@ -54,7 +54,7 @@ class BetProcessor(Processor):
                 top_result.append('{0} ({1})'.format(points.username, points.points))
             if len(top_result) == 0:
                 return
-            self.get_irc().send_msg('Les oracles {0} à {1} sont {2}'.format(offset, offset+len(top_result), ', '.join(top_result)))
+            self.get_irc().send_msg('Les oracles {0} à {1} sont {2}'.format(offset, offset+len(top_result)-1, ', '.join(top_result)))
 
     def bet(self, param_line, sender, is_admin):
         """Register a bet of a user."""
