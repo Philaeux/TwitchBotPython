@@ -50,7 +50,7 @@ class BetProcessor(Processor):
             if not is_admin or not param_line.isdigit():
                 return
             offset = int(param_line)
-            for points in session.query(UserPoints).order_by(UserPoints.points.desc()).offset(offset).limit(5):
+            for points in session.query(UserPoints).order_by(UserPoints.points.desc()).offset(offset-1).limit(5):
                 top_result.append('{0} ({1})'.format(points.username, points.points))
             if len(top_result) == 0:
                 return
