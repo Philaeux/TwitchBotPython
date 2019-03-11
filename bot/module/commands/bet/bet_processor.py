@@ -209,7 +209,7 @@ class BetProcessor(Processor):
                 session.add(points)
                 session.commit()
 
-            self.get_irc().send_msg("/w {0} Vous avez {1} points.".format(sender, points.points))
+            self.get_irc().send_msg("{0} a {1} points.".format(sender, points.points))
         else:
             if not is_admin:
                 return
