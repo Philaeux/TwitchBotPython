@@ -139,7 +139,7 @@ class BetProcessor(Processor):
                 self.bets[index][sender] = [points.points, bet_value]
 
             # Too much bets make it impossible for the bot to send that much private messages.
-            # self.get_irc().send_msg("/w {0} Vous avez bet {1} points sur {2}. Vous pouvez modifier tant que le bet est ouvert.".format(sender, bet_value, params[0].lower()))
+            self.get_irc().send_msg("{0} a bet {1} points sur {2}.".format(sender, bet_value, params[0].lower()))
         elif params[0] == 'result':
             if not is_admin:
                 return
