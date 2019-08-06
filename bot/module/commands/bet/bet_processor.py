@@ -92,7 +92,7 @@ class BetProcessor(Processor):
                 return
             self.status = 'BET_WAITING_RESULT'
             self.total = [0, 0]
-            self.cotes = [1, 1]
+            self.cotes = [1 + 0.5, 1 + 0.5]
             for i in range(0, 2):
                 for better in self.bets[i]:
                     self.total[i] += self.bets[i][better][1]
@@ -157,7 +157,7 @@ class BetProcessor(Processor):
             session = self.get_bot().database_sessions()
             for better in self.bets[counter_index]:
                 points = session.query(UserPoints).filter(UserPoints.username == better).one_or_none()
-                points.points = max(self.bets[counter_index][better][0] - self.bets[counter_index][better][1], 0)
+                points.points = max(self.bets[counter_index][better][0] - self.bets[counter_index][better][1], 1)
                 losers.append({ 'name': better, 'value': points.points - self.bets[counter_index][better][0] })
             for better in self.bets[index]:
                 points = session.query(UserPoints).filter(UserPoints.username == better).one_or_none()
