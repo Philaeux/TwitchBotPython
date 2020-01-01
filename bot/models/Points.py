@@ -1,6 +1,7 @@
 from bot.database import Base
 from sqlalchemy import Column, Integer, String
 
+
 class UserPoints(Base):
     __tablename__ = 'user_points'
 

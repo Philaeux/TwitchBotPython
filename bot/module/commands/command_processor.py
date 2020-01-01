@@ -5,9 +5,10 @@ from bot.module.commands.info.info_processor import InfoProcessor
 from bot.module.commands.vote.vote_processor import VoteProcessor
 from bot.module.commands.wiki.wiki_processor import WikiProcessor
 from bot.module.commands.bet.bet_processor import BetProcessor
+from bot.module.commands.ads.ads_processor import AdsProcessor
 
 
-class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProcessor, BetProcessor):
+class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProcessor, BetProcessor, AdsProcessor):
     """Class processing all commands sent into the chat.
 
     Attributes:
@@ -28,6 +29,7 @@ class CommandProcessor(InfoProcessor, CalendarProcessor, VoteProcessor, WikiProc
         InfoProcessor.__init__(self)
         CalendarProcessor.__init__(self)
         BetProcessor.__init__(self)
+        AdsProcessor.__init__(self)
 
     def process(self, command_line, sender, is_admin):
         """Process a command.

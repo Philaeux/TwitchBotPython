@@ -14,6 +14,7 @@ from bot.module.commands.command_processor import CommandProcessor
 logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s',
                     level=logging.INFO)
 
+
 class Bot:
     """The Master class for the bot, holding all modules.
 
@@ -57,11 +58,11 @@ class Bot:
         self.irc_bot.stop()
         exit(0)
 
-# Start if main script
+
 if __name__ == '__main__':
+    # Start if main script
     bot = Bot()
     bot.start()
 
     signal(SIGINT, bot.stop)
     signal(SIGTERM, bot.stop)
-
