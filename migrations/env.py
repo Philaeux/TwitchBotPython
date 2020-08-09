@@ -16,7 +16,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from bot.database import Base
-from bot.bot_application import Bot
+from bot.bot import Bot
 bot = Bot()
 config.set_main_option('sqlalchemy.url',
                        bot.database_uri)

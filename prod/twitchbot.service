@@ -3,7 +3,7 @@ Description=BotName
 
 [Service]
 Type=simple
-ExecStart=/<PATH TO FOLDER>/.venv/bin/python /<PATH TO FOLDER>/bot/bot_application.py
+ExecStart=/<PATH TO FOLDER>/.venv/bin/python /<PATH TO FOLDER>/app.py
 
 [Install]
 WantedBy=multi-user.target
