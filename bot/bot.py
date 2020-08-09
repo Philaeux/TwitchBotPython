@@ -13,6 +13,7 @@ from bot.module.commands.command_processor import CommandProcessor
 logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s',
                     level=logging.INFO)
 
+
 class Bot:
     """The Master class for the bot, holding all modules.
 
