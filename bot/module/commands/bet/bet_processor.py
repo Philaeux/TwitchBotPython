@@ -7,6 +7,7 @@ from operator import itemgetter
 from bot.module.commands.processor import Processor
 from bot.models.Points import UserPoints
 
+
 class BetProcessor(Processor):
     """Processor for all bet commands.
 
@@ -220,6 +221,3 @@ class BetProcessor(Processor):
                 return
             else:
                 self.get_irc().send_msg("{0} a {1} points.".format(param_line, points.points))
-
-
-
