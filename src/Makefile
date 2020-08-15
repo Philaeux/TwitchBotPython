@@ -19,7 +19,7 @@ unix-run:
 	.venv/bin/python3 app.py
 
 win-build:
-	.\.wvenv\Scripts\python.exe .\app.py
+	.\.wvenv\Scripts\pyinstaller.exe --distpath ../build/dist --workpath ../build --onedir -n twitchbot --add-data ".\default\settings.ini;." --add-data ".\default\sqlite.db;." --add-data ".\bot\data;data" .\app.py
 
 win-clean:
 	rm -r .wvenv

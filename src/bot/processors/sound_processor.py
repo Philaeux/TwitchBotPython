@@ -1,4 +1,5 @@
 import os
+import sys
 
 
 class SoundProcessor:
@@ -20,7 +21,11 @@ class SoundProcessor:
 
         # Load sounds
         self.sound_dictionary = {}
-        with open(os.path.join(os.path.dirname(__file__), "..", "data", "sounds.txt"), "r") as file:
+        if getattr(sys, 'frozen', False):
+            self.data_path = os.path.join(os.path.dirname(sys.executable), "data")
+        elif __file__:
+            self.data_path = os.path.join(os.path.dirname(__file__), "..", "data")
+        with open(os.path.join(self.data_path, "sounds.txt"), "r") as file:
             lines = file.readlines()
             for line in lines:
                 if "=" not in line:
@@ -28,7 +33,7 @@ class SoundProcessor:
                 split_line = line.split("=")
                 key = split_line[0].strip()
                 value = split_line[1].strip()
-                self.sound_dictionary[key] = value
+                self.sound_dictionary[key] = os.path.join(self.data_path, "sound", value)
 
         # Add handlers
         reward_id_list = self.bot.strategy.reward_handlers.get(self.sound_reward_id, None)

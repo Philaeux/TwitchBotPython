@@ -3,6 +3,7 @@
 .wvenv
 __pycache__
 src/bot/settings.ini
-src/bot/sqlite.db
+src/bot/models/sqlite.db
+src/twitchbot.spec
 build/*
 !build/.gitignore

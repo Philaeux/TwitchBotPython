@@ -39,13 +39,12 @@ class BotWidget(QWidget):
 
     def play_sound(self, sound_uri):
         """Queue a sound to play"""
-        full_uri = os.path.join(os.path.dirname(__file__), "data", "sound", sound_uri)
         if self.playlist.currentIndex() == -1:
             self.playlist.clear()
-            self.playlist.addMedia(QUrl.fromLocalFile(full_uri))
+            self.playlist.addMedia(QUrl.fromLocalFile(sound_uri))
             self.play_signal.emit()
         else:
-            self.playlist.addMedia(QUrl.fromLocalFile(full_uri))
+            self.playlist.addMedia(QUrl.fromLocalFile(sound_uri))
 
 
 class BotUI:

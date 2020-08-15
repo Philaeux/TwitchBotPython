@@ -2,7 +2,7 @@ import logging
 import os
 import threading
 from configparser import ConfigParser
-from sys import exit
+import sys
 
 from bot.models.database_client import Database
 from bot.gui import BotUI
@@ -19,7 +19,11 @@ class Bot:
     def __init__(self):
         self.config = ConfigParser()
         try:
-            self.config.read(os.path.join(os.path.dirname(__file__), 'settings.ini'))
+            if getattr(sys, 'frozen', False):
+                application_path = os.path.dirname(sys.executable)
+            elif __file__:
+                application_path = os.path.dirname(__file__)
+            self.config.read(os.path.join(application_path, 'settings.ini'))
         except Exception:
             print('Impossible to load settings.ini config. ', 'Check configuration format.')
             exit(1)
