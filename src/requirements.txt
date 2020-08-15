@@ -1,0 +1,7 @@
+google-api-python-client
+irc
+mwclient
+SQLAlchemy
+Alembic
+pyside2
+pyinstaller

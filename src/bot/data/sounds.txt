@@ -1,0 +1,76 @@
+ah = denis_ah.mp3
+ayaya = ayaya.mp3
+bazinga = bazinga.mp3
+coffin = coffin_dance.mp3
+deja vu = deja_vu.mp3
+falcon punch = falcon_punch.mp3
+fbi open up = fbi_open_up.mp3
+fucked up = fucked_up.mp3
+hadouken = hadouken.mp3
+here we go again = here_we_go_again.mp3
+kamehameha = kamehameha.mp3
+lazor = lazor.mp3
+laught = laught.mp3
+listen = listen.mp3
+money = shut_up_and_take_my_money.mp3
+nani = nani.mp3
+nyaa = nyaa.mp3
+no god = no_god.mp3
+oof = oof.mp3
+oh no no = oh_no_no_no.mp3
+run bitch = run_bitch_run.mp3
+shindeiru = shindeiru.mp3
+sorry = sorry.mp3
+steam chat = steam_chat.mp3
+tutturu = tutturu.mp3
+wololo = wololo.mp3
+
+ding ding = dota/caster_ding_ding.mp3
+jugger bitch = dota/juggernaut_i_am_the_juggernaut_bitch.mp3
+kotl cast = dota/kotl_you_shall_not_cast.mp3
+lakad = dota/caster_lakad.mp3
+lion hell = dota/lion_hell_back.mp3
+meep merp = dota/meep_merp.mp3
+
+pass = lotr/you_shall_not_pass.mp3
+
+donne = south_park/donne.mp3
+i member = south_park/I_member.mp3
+mongols = south_park/mongols.mp3
+
+anakin = sw/anakin.mp3
+chewbacca = sw/chewbacca.mp3
+done = sw/done.mp3
+lightsaber = sw/lightsaber.mp3
+noo = sw/noo.mp3
+order 66 = sw/order_66.mp3
+senate = sw/senate.mp3
+
+c'est la guerre = kaamelott/arthour_cest_la_guerre.mp3
+c'est pas faux = kaamelott/cest_pas_faux2.mp3
+details = kaamelott/apres_pour_le_detail_je_sais_pas.mp3
+ebaubir = kaamelott/ebaubir.mp3
+faut ce qui faut = kaamelott/faut_ce_qui_faut.mp3
+fleches = kaamelott/cest_pas_des_fleches.mp3
+fondue = kaamelott/cest-marrant-les-petits-bouts-de-fromage-par-terre.mp3
+gros nul = kaamelott/vous_etes_un_gros_nul.mp3
+gueuler comme un con = kaamelott/ah_mais_arretez_de_gueuler_comme_un_con.mp3
+je vois trouble = kaamelott/je_vois_trouble.mp3
+joie de vivre = kaamelott/joie_de_vivre.mp3
+mais tout a fait = kaamelott/mais_tout_a_fait.mp3
+merde = kaamelott/cest_de_la_merde_2.mp3
+pute = kaamelott/en_garde_espece_de_vieille_pute_degarnie.mp3
+reposer = kaamelott/allez_vous_reposer_vous_l_avez_bien_merite.mp3
+revolte = kaamelott/bon_ben_revolte.mp3
+volette = kaamelott/a_la_volette1.mp3
+
+chasseur = inconnus/chasseur.mp3
+que se passe = inconnus/mais_que_se_passe_t_il.mp3
+
+this is sparta = 300/this_is_sparta.mp3
+
+entertained = gladiator/are_you_not_entertained.mp3
+maximus = gladiator/my_name_is_maximus.mp3
+
+murloc = warcraft/murloc.mp3
+prepared = warcraft/prepared.mp3
