@@ -137,6 +137,7 @@ ah bon = various\ah_bon.mp3
 ayaya = various\ayaya.mp3
 bazinga = various\bazinga.mp3
 bruh = various\bruh.mp3
+coco = various\coco.mp3
 coffin dance = various\coffin_dance.mp3
 damn = various\damn.mp3
 deja vu = various\deja_vu.mp3
