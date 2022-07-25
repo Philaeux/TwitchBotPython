@@ -1,7 +1,6 @@
 import sys
-import os
 
-from PySide2.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
+from PySide2.QtWidgets import QApplication, QVBoxLayout, QWidget, QComboBox
 from PySide2.QtMultimedia import QMediaPlayer, QMediaPlaylist
 from PySide2.QtCore import Slot, Signal, QUrl
 
@@ -19,19 +18,35 @@ class BotWidget(QWidget):
         QWidget.__init__(self)
         self.bot = bot
 
-        self.button = QPushButton("I'm a useless button :)")
-
+        self.out_combo = QComboBox()
         self.layout = QVBoxLayout()
-        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.out_combo)
         self.setLayout(self.layout)
 
         self.player = QMediaPlayer()
+        service = self.player.service()
+        if service:
+            out = service.requestControl("org.qt-project.qt.audiooutputselectorcontrol/5.0")
+            if out:
+                for device in out.availableOutputs():
+                    self.out_combo.addItem(device, device)
+                out.setActiveOutput("@device:cm:{E0F158E1-CB04-11D0-BD4E-00A0C911CE86}\DirectSound:{54D29263-E90C-4F36-AE6B-7B15E17788E3}")
+                service.releaseControl(out)
         self.player.setVolume(100)
         self.playlist = QMediaPlaylist(self.player)
         self.player.setPlaylist(self.playlist)
 
-        # Connecting the signal
+        self.out_combo.currentIndexChanged.connect(self.out_device_changed)
         self.play_signal.connect(self.play)
+
+    def out_device_changed(self, idx):
+        device = self.out_combo.itemData(idx)
+        service = self.player.service()
+        if service:
+            out = service.requestControl("org.qt-project.qt.audiooutputselectorcontrol/5.0")
+            if out:
+                out.setActiveOutput(device)
+                service.releaseControl(out)
 
     @Slot()
     def play(self):
