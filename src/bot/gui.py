@@ -30,7 +30,8 @@ class BotWidget(QWidget):
             if out:
                 for device in out.availableOutputs():
                     self.out_combo.addItem(device, device)
-                out.setActiveOutput("@device:cm:{E0F158E1-CB04-11D0-BD4E-00A0C911CE86}\DirectSound:{54D29263-E90C-4F36-AE6B-7B15E17788E3}")
+                self.out_combo.setCurrentText("@device:cm:{E0F158E1-CB04-11D0-BD4E-00A0C911CE86}\wave:{4885BCE7-002C-400B-9D99-9AE3A0F3B7CF}")
+                out.setActiveOutput("@device:cm:{E0F158E1-CB04-11D0-BD4E-00A0C911CE86}\wave:{4885BCE7-002C-400B-9D99-9AE3A0F3B7CF}")
                 service.releaseControl(out)
         self.player.setVolume(100)
         self.playlist = QMediaPlaylist(self.player)
