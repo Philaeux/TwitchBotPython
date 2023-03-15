@@ -40,6 +40,7 @@ class SoundProcessor:
     def on_sound_request(self, sender, is_admin, is_sub, reward_id, message):
         lower_message = message.lower()
         lower_message = lower_message.replace("’", "'")
+        lower_message = lower_message.replace(" ", "_")
         lower_message = lower_message.replace("à", "a")
         lower_message = lower_message.replace("è", "e")
         lower_message = lower_message.replace("é", "e")
