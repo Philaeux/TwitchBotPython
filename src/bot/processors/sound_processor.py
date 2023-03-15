@@ -22,18 +22,12 @@ class SoundProcessor:
         # Load sounds
         self.sound_dictionary = {}
         if getattr(sys, 'frozen', False):
-            self.data_path = os.path.join(os.path.dirname(sys.executable), "data")
+            self.sound_path = os.path.join(os.path.dirname(sys.executable), "data", "sound")
         elif __file__:
-            self.data_path = os.path.join(os.path.dirname(__file__), "..", "data")
-        with open(os.path.join(self.data_path, "sounds.txt"), "r") as file:
-            lines = file.readlines()
-            for line in lines:
-                if "=" not in line:
-                    continue
-                split_line = line.split("=")
-                key = split_line[0].strip()
-                value = split_line[1].strip()
-                self.sound_dictionary[key] = os.path.join(self.data_path, "sound", value)
+            self.sound_path = os.path.join(os.path.dirname(__file__), "..", "data", "sound")
+        for dir_path, _, filenames in os.walk(self.sound_path):
+            for sound_file in [f for f in filenames if f.endswith(".mp3")]:
+                self.sound_dictionary[sound_file[:-4]] = os.path.join(dir_path, sound_file)
 
         # Add handlers
         reward_id_list = self.bot.strategy.reward_handlers.get(self.sound_reward_id, None)
