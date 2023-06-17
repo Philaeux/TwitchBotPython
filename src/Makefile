@@ -4,7 +4,7 @@ win-install:
 	python -m venv .wvenv
 	.\.wvenv\Scripts\python.exe -m pip install --upgrade pip
 	.\.wvenv\Scripts\python.exe -m pip install -r .\requirements.txt
-	"$(get-location)" > .\.wvenv\Lib\site-packages\grenouillebot.pth
+	"$(get-location)" > .\.wvenv\Lib\site-packages\bot.pth
 
 unix-install:
 	python3 -m venv .venv

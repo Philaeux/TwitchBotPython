@@ -9,7 +9,7 @@ class SoundProcessor:
 
     Attributes:
         bot: master bot
-        sound_reward_id: reward id linked to sound playing
+        sound_reward_id: reward id linked to playing sounds
         sound_dictionary: dict of all key-files associations
     """
 
@@ -43,8 +43,8 @@ class SoundProcessor:
             self.last_sound_load = time.time()
             self.sound_dictionary = {}
             for dir_path, _, filenames in os.walk(self.sound_path):
-                for sound_file in [f for f in filenames if f.endswith(".mp3")]:
-                    self.sound_dictionary[sound_file[:-4]] = os.path.join(dir_path, sound_file)
+                for sound_file in [f for f in filenames if f.endswith(".opus")]:
+                    self.sound_dictionary[sound_file[:-5]] = os.path.join(dir_path, sound_file)
 
     def on_sound_request(self, sender, is_admin, is_sub, reward_id, message):
         lower_message = message.lower()
@@ -58,3 +58,5 @@ class SoundProcessor:
             self.bot.gui.widget.play_sound(self.sound_dictionary[lower_message])
         else:
             self.reload_sound_map()
+            if lower_message in self.sound_dictionary:
+                self.bot.gui.widget.play_sound(self.sound_dictionary[lower_message])
