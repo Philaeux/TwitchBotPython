@@ -28,12 +28,13 @@ class Strategy:
         handler = self.command_handlers.get(command, None)
         if handler is None:
             return
-        handler(sender, is_admin, is_sub, command, arguments)
+        else:
+            handler(sender, is_admin, is_sub, command, arguments)
 
     def on_reward(self, sender, is_admin, is_sub, reward_id, message):
         print("reward s:{} a:{} s:{} r:{} m:{}".format(sender, is_admin, is_sub, reward_id, message))
-        target_handlers = self.reward_handlers.get(reward_id, None)
-        if target_handlers is None:
+        handler = self.reward_handlers.get(reward_id, None)
+        if handler is None:
             return
-        for handler in target_handlers:
-            handler(sender, is_admin, is_sub, reward_id, message)
+        else:
+            handler(sender, is_admin, is_sub, message)

@@ -10,7 +10,7 @@ unix-install:
 	python3 -m venv .venv
 	.venv/bin/pip3 install --upgrade pip
 	.venv/bin/pip3 install -r requirements.txt
-	$(foreach dir, $(wildcard .venv/lib/*), echo $(shell pwd) > $(dir)/site-packages/grenouillebot.pth &&) echo
+	$(foreach dir, $(wildcard .venv/lib/*), echo $(shell pwd) > $(dir)/site-packages/bot.pth &&) echo
 
 win-run:
 	.\.wvenv\Scripts\python.exe .\app.py

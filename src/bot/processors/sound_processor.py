@@ -30,13 +30,8 @@ class SoundProcessor:
             self.sound_path = os.path.join(os.path.dirname(__file__), "..", "data", "sound")
         self.reload_sound_map()
 
-        # Add handlers
-        reward_id_list = self.bot.strategy.reward_handlers.get(self.sound_reward_id, None)
-        if reward_id_list is not None:
-            reward_id_list.append(self.on_sound_request)
-        else:
-            reward_id_list = [self.on_sound_request]
-            self.bot.strategy.reward_handlers[self.sound_reward_id] = reward_id_list
+        # Add handler
+        self.bot.strategy.reward_handlers[self.sound_reward_id] = self.on_sound_request
         
     def reload_sound_map(self):
         if time.time() > self.last_sound_load + self.MAX_RELOAD_FREQUENCY:
@@ -46,7 +41,7 @@ class SoundProcessor:
                 for sound_file in [f for f in filenames if f.endswith(".opus")]:
                     self.sound_dictionary[sound_file[:-5]] = os.path.join(dir_path, sound_file)
 
-    def on_sound_request(self, sender, is_admin, is_sub, reward_id, message):
+    def on_sound_request(self, sender, is_admin, is_sub, message):
         lower_message = message.lower()
         lower_message = lower_message.replace("’", "'")
         lower_message = lower_message.replace(" ", "_")
