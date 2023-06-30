@@ -1,36 +1,48 @@
 import logging
+import sys
 from datetime import datetime
 
 from irc.bot import SingleServerIRCBot
 
 
 class IrcClient(SingleServerIRCBot):
-    """The module of the bot responsible for the Twitch (IRC) chat.
+    """Module responsible for the Twitch (IRC) chat.
 
-    Listen to all pub messages and forward to the command processor if a
-    command is detected. Provide methods to send message to the current
-    channel or a private message to a user.
+    Listen to all pub messages and forward to the command processor if a command is detected.
+    Provide methods to send message to the current channel or a private message to a user.
+
+    Attributes:
+        bot: Bot owning this client
+        stop_signal: Flag for process termination.
     """
 
     def __init__(self, bot):
         self.bot = bot
-        config = self.bot.config['IRC']
+        irc_config = self.bot.config['IRC']
 
-        self.enabled = config.getboolean('enabled', False)
+        self.enabled = irc_config.getboolean('enabled', False)
         if not self.enabled:
             return
 
-        nickname = config['nickname']
+        nickname = irc_config['nickname']
         server = 'irc.chat.twitch.tv'
-        password = config['token']
+        password = irc_config['token']
         port = 6667
         SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
 
-        self.channel = config['channel']
+        self.channel = irc_config['channel']
         self.last_ping = datetime.utcnow()
+        self.stop_signal = False
 
-    def stop(self):
-        self.die()
+    def stop(self) -> None:
+        """Set the stop flag and disconnect all open sockets."""
+        self.stop_signal = True
+        self.disconnect()
+
+    def on_disconnect(self, connection, e) -> None:
+        """When the IRC bot is disconnected, end the thread only if the stop flag is set."""
+        if self.stop_signal:
+            sys.exit(0)
 
     def on_welcome(self, connection, e):
         """Called when the bot is connected to the IRC server. Setup config."""
@@ -64,6 +76,7 @@ class IrcClient(SingleServerIRCBot):
             command = message[1:].split(' ', maxsplit=1)[0]
 
         strategy = self.bot.strategy
+
         if reward_id is not None:
             strategy.on_reward(sender, is_admin, is_sub, reward_id, message)
         elif command is not None:

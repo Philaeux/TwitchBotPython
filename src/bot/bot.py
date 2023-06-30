@@ -23,9 +23,17 @@ class Singleton(type):
 
 
 class Bot(metaclass=Singleton):
-    """The Master class for the bot, holding all modules."""
+    """The Master class for the bot, owning all modules.
 
-    def __init__(self):
+    Attributes:
+        config: bot ConfigParser configuration
+        database: database client
+        irc: irc thread
+        gui: qt gui thread
+        strategy: decision-making strategies
+    """
+
+    def __init__(self) -> None:
         self.config = ConfigParser()
         try:
             if getattr(sys, 'frozen', False):
@@ -40,19 +48,14 @@ class Bot(metaclass=Singleton):
         self.database = Database(self)
         self.strategy = Strategy(self)
         self.irc = IrcClient(self)
-        self.gui = BotUI(self.config)
+        self.gui = BotUI(self.config["GUI"])
 
         self.strategy.init_processors()
 
     def run(self):
         """Start all independent modules."""
-        irc_thread = threading.Thread(target=self.irc.start)
+        irc_thread = threading.Thread(target=self.irc.start, daemon=True)
         irc_thread.start()
+
         self.gui.run()
-
-        self.stop()
-        irc_thread.join()
-
-    def stop(self):
-        """Stop the running bot by stopping all actors. Shutdown."""
         self.irc.stop()

@@ -2,4 +2,3 @@ irc
 SQLAlchemy
 Alembic
 pyqt6
-TensorFlow

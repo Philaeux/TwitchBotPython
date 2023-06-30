@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 import os
-from pathlib import Path 
+from pathlib import Path
 import shutil
 import sys
 
@@ -9,7 +9,7 @@ from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtCore import QUrl, pyqtSignal
 
 
-def compute_blog_files():
+def compute_blog_files() -> None:
     """Generates all files necessary to be displayed on a blog.
 
     Generate a Markdown file listing all sounds files and copy the directory of all sound files.
@@ -21,7 +21,7 @@ def compute_blog_files():
         bot_sound_dir = Path(os.path.dirname(__file__)) / "data" / "sound"
 
     from bot.bot import Bot
-    blog_root = Path(Bot().config["BLOG_EXPORT"].get("blog_path", "C:/"))
+    blog_root = Path(Bot().config["GUI"].get("blog_path", "C:/"))
 
     blog_list_file = blog_root / "sounds.md"
     blog_sound_dir = blog_root / "assets" / "sounds"
@@ -78,11 +78,11 @@ class BotMainWindow(QMainWindow):
     """
     play_signal = pyqtSignal(bool)
 
-    def __init__(self, config: ConfigParser) -> None:
+    def __init__(self, ui_config: ConfigParser) -> None:
         """Constructor
 
         Args:
-            config: General bot configuration file
+            ui_config: ConfigParser with only the [GUI] section.
         """
         QMainWindow.__init__(self)
 
@@ -92,7 +92,7 @@ class BotMainWindow(QMainWindow):
         layout = QVBoxLayout()
         widget = QWidget()
 
-        if config["BLOG_EXPORT"].get("enabled", "False") == "True":
+        if ui_config.get("blog_export_enabled", "False") == "True":
             compute_button = QPushButton(text="Generate Blog Files")
             compute_button.clicked.connect(compute_blog_files)
             layout.addWidget(compute_button)
@@ -147,11 +147,17 @@ class BotUI:
         app: QT Application
         window: Main widget used in the application
     """
-    def __init__(self, config: ConfigParser) -> None:
+
+    def __init__(self, ui_config: ConfigParser) -> None:
+        """Constructor.
+
+        Args:
+            ui_config: ConfigParser with only the [GUI] section.
+        """
         self.app = QApplication(sys.argv)
         self.app.setApplicationName("TwitchBotPython")
 
-        self.window = BotMainWindow(config)
+        self.window = BotMainWindow(ui_config)
         self.window.resize(300, 150)
         self.window.show()
 
