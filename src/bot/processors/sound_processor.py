@@ -50,8 +50,8 @@ class SoundProcessor:
         lower_message = lower_message.replace("é", "e")
         lower_message = lower_message.replace("ö", "o")
         if lower_message in self.sound_dictionary:
-            self.bot.gui.window.play_sound(self.sound_dictionary[lower_message])
+            self.bot.gui.window.queue_sound(self.sound_dictionary[lower_message])
         else:
             self.reload_sound_map()
             if lower_message in self.sound_dictionary:
-                self.bot.gui.window.play_sound(self.sound_dictionary[lower_message])
+                self.bot.gui.window.queue_sound(self.sound_dictionary[lower_message])
