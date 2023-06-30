@@ -13,7 +13,15 @@ from bot.strategy import Strategy
 logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s', level=logging.INFO)
 
 
-class Bot:
+class Singleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class Bot(metaclass=Singleton):
     """The Master class for the bot, holding all modules."""
 
     def __init__(self):

@@ -1,12 +1,63 @@
+import os
+from pathlib import Path
+import shutil
 import sys
 
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QComboBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtCore import QUrl, pyqtSignal
 
 
-class BotWidget(QWidget):
-    """Main widget used in the application
+def compute_blog_files():
+    bot_sound_dir = Path("C:/dev/TwitchBotPython/src/bot/data/sound")
+    blog_root = Path("C:/dev/philaeux.github.io")
+
+    blog_list_file = blog_root / "sounds.md"
+    blog_sound_dir = blog_root / "assets" / "sounds"
+
+    # Copy all sounds file to blog
+    if blog_sound_dir.exists():
+        shutil.rmtree(blog_sound_dir)
+        shutil.copytree(bot_sound_dir, blog_sound_dir)
+
+    # Generate new list file
+    if blog_list_file.exists():
+        blog_list_file.unlink()
+    with open(blog_list_file, "a") as file_descriptor:
+        file_descriptor.write("---\n")
+        file_descriptor.write("layout: post\n")
+        file_descriptor.write("title: Sounds available in Stream\n")
+        file_descriptor.write("---\n")
+        file_descriptor.write("Use the name to start a sound as a message of the \"Play Sound\" reward. \n")
+        file_descriptor.write("\n")
+
+        # Navigation Table
+        for root, dirs, files in os.walk(bot_sound_dir, topdown=False):
+            if Path(root) == bot_sound_dir:
+                continue
+            section = os.path.basename(Path(root))
+            section_pretty = section.replace("_", " ").title()
+            file_descriptor.write("* [" + section_pretty + "](#" + section + ")\n")
+        file_descriptor.write("\n")
+
+        # All files
+        for root, dirs, files in os.walk(bot_sound_dir, topdown=False):
+            if Path(root) == bot_sound_dir:
+                continue
+            section = os.path.basename(Path(root))
+            section_pretty = section.replace("_", " ").title()
+            file_descriptor.write("\n### " + section_pretty + "  <a name=\"" + section + "\"></a>\n\n")
+            for name in files:
+                if name[-5:] != ".opus":
+                    continue
+                file_descriptor.write("* &nbsp; <audio controls preload=\"none\"><source src=\"\\assets\\sounds\\"
+                                      + section + "\\" + name + "\" type=\"audio/ogg; codecs=opus\"></audio>&nbsp; "
+                                      + name[:-5].replace("_", " ") + "\n")
+            file_descriptor.write("<a href=\"#\" class=\"backlogo\">&#x25B2;</a>\n")
+
+
+class BotMainWindow(QMainWindow):
+    """Main window used in the application
 
     Attributes:
         player: sound player
@@ -15,12 +66,21 @@ class BotWidget(QWidget):
     """
     play_signal = pyqtSignal(bool)
 
-    def __init__(self, bot):
-        QWidget.__init__(self)
-        self.bot = bot
+    def __init__(self):
+        QMainWindow.__init__(self)
 
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        self.setWindowTitle("TwitchBotPython")
+
+        # Widget Layout
+        layout = QVBoxLayout()
+        widget = QWidget()
+
+        compute_button = QPushButton(text="Generate Blog Files")
+        compute_button.clicked.connect(compute_blog_files)
+        layout.addWidget(compute_button)
+
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
 
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -64,7 +124,7 @@ class BotUI:
     Attributes:
         bot: main bot owning the module
         app: QT Application
-        widget: Main widget used in the application
+        window: Main widget used in the application
     """
     def __init__(self, bot):
         self.bot = bot
@@ -72,9 +132,9 @@ class BotUI:
         self.app = QApplication(sys.argv)
         self.app.setApplicationName("TwitchBotPython")
 
-        self.widget = BotWidget(bot)
-        self.widget.resize(300, 150)
-        self.widget.show()
+        self.window = BotMainWindow()
+        self.window.resize(300, 150)
+        self.window.show()
 
     def run(self):
         """Start the QT Application and wait for closure"""
