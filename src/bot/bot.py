@@ -5,7 +5,7 @@ from configparser import ConfigParser
 import sys
 
 from bot.models.database_client import Database
-from bot.gui import BotUI
+from bot.ui.qt_app import QtApp
 from bot.irc_client import IrcClient
 from bot.strategy import Strategy
 
@@ -29,7 +29,7 @@ class Bot(metaclass=Singleton):
         config: bot ConfigParser configuration
         database: database client
         irc: irc thread
-        gui: qt gui thread
+        qt: qt gui thread
         strategy: decision-making strategies
     """
 
@@ -48,7 +48,7 @@ class Bot(metaclass=Singleton):
         self.database = Database(self)
         self.strategy = Strategy(self)
         self.irc = IrcClient(self)
-        self.gui = BotUI(self.config["GUI"])
+        self.qt = QtApp(self)
 
         self.strategy.init_processors()
 
@@ -57,5 +57,5 @@ class Bot(metaclass=Singleton):
         irc_thread = threading.Thread(target=self.irc.start, daemon=True)
         irc_thread.start()
 
-        self.gui.run()
+        self.qt.run()
         self.irc.stop()

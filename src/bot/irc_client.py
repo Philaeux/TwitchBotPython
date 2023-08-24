@@ -49,8 +49,17 @@ class IrcClient(SingleServerIRCBot):
         connection.join(self.channel)
         connection.set_rate_limit(0.5)
         connection.send_raw('CAP REQ :twitch.tv/commands')
+        connection.send_raw('CAP REQ :twitch.tv/membership')
         connection.send_raw('CAP REQ :twitch.tv/tags')
+        connection.add_global_handler("join", self.on_join)
+        connection.add_global_handler("part", self.on_part)
         logging.info('Connected to channel.')
+
+    def on_join(self, connection, e):
+        self.bot.qt.window.chatter_join.emit(e.source.split("!")[0])
+
+    def on_part(self, connection, e):
+        self.bot.qt.window.chatter_left.emit(e.source.split("!")[0])
 
     def on_ping(self, connection, e):
         """Save last ping for sanitizer check."""

@@ -1,9 +1,11 @@
+__pycache__
+
 .idea
 .venv
 .wvenv
-__pycache__
+
+src/bot/ui/resources_rc.py
+src/bot/ui/ui_main_window.py
+
 src/bot/settings.ini
 src/bot/models/sqlite.db
-src/twitchbot.spec
-build/*
-!build/.gitignore

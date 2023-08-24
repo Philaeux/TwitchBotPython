@@ -1,4 +1,4 @@
 irc
 SQLAlchemy
 Alembic
-pyqt6
+PySide6
