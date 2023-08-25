@@ -38,9 +38,9 @@ class QtApp:
         self.window.buttonSettingsCancel.clicked.connect(self.on_settings_cancel)
 
         self.chatter_in = ChatterModel()
-        self.window.listViewIn.setModel(self.chatter_in)
-        self.chatter_out = ChatterModel()
-        self.window.listViewOut.setModel(self.chatter_out)
+        self.window.tableViewIn.setModel(self.chatter_in)
+        self.chatter_out = ChatterModel(display_left=True)
+        self.window.tableViewOut.setModel(self.chatter_out)
 
         self.window.show()
 

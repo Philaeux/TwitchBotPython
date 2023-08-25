@@ -8,4 +8,4 @@ src/bot/ui/resources_rc.py
 src/bot/ui/ui_main_window.py
 
 src/bot/settings.ini
-src/bot/models/sqlite.db
+src/bot/data/database/sqlite.db

@@ -1,4 +1,3 @@
-from bot.processors.bet_processor import BetProcessor
 from bot.processors.sound_processor import SoundProcessor
 
 
@@ -12,11 +11,9 @@ class Strategy:
         self.reward_handlers = {}
 
         self.sound_processor = None
-        self.bet_processor = None
 
     def init_processors(self):
         self.sound_processor = SoundProcessor(self.bot)
-        self.bet_processor = BetProcessor(self.bot)
 
     def on_message(self, sender, is_admin, is_sub, message):
         print("message s:{} a:{} s:{} m:{}".format(sender, is_admin, is_sub, message))

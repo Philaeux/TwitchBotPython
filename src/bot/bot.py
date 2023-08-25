@@ -4,7 +4,7 @@ import threading
 from configparser import ConfigParser
 import sys
 
-from bot.models.database_client import Database
+from bot.data.database.database import Database
 from bot.ui.qt_app import QtApp
 from bot.irc_client import IrcClient
 from bot.strategy import Strategy
@@ -45,7 +45,7 @@ class Bot(metaclass=Singleton):
             print('Impossible to load settings.ini config. ', 'Check configuration format.')
             exit(1)
 
-        self.database = Database(self)
+        self.database = Database()
         self.strategy = Strategy(self)
         self.irc = IrcClient(self)
         self.qt = QtApp(self)
