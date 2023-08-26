@@ -4,7 +4,10 @@ import threading
 from configparser import ConfigParser
 import sys
 
+from sqlalchemy.orm import Session
+
 from bot.data.database.database import Database
+from bot.data.settings import Settings
 from bot.ui.qt_app import QtApp
 from bot.irc_client import IrcClient
 from bot.strategy import Strategy
@@ -46,6 +49,11 @@ class Bot(metaclass=Singleton):
             exit(1)
 
         self.database = Database()
+        self.settings = Settings()
+        with Session(self.database.engine) as session:
+            self.settings.import_from_database(session)
+            session.commit()
+
         self.strategy = Strategy(self)
         self.irc = IrcClient(self)
         self.qt = QtApp(self)

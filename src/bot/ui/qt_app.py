@@ -1,4 +1,3 @@
-from configparser import ConfigParser
 import os
 from pathlib import Path
 import shutil
@@ -15,16 +14,11 @@ class QtApp:
     """QT Application used to display the GUI
 
     Attributes:
-        app: QT Application
-        window: Main widget used in the application
+        app: QApplication
+        window: MainWindow of the QApplication
     """
 
     def __init__(self, bot) -> None:
-        """Constructor.
-
-        Args:
-            ui_config: ConfigParser with only the [GUI] section.
-        """
         self.bot = bot
         self.app = QApplication(sys.argv)
         self.window = MainWindow()
@@ -49,6 +43,7 @@ class QtApp:
         self.app.exec()
 
     def on_open_settings(self):
+        """User opens settings tab"""
         self.window.centralStackedWidget.setCurrentIndex(1)
 
     def on_settings_save(self):
@@ -64,10 +59,12 @@ class QtApp:
         self.window.centralStackedWidget.setCurrentIndex(0)
 
     def on_chatter_join(self, nickname):
+        """When a new viewer enter the room"""
         self.chatter_out.remove(nickname)
         self.chatter_in.add(ChatterModelElement(nickname, datetime.now()))
 
     def on_chatter_left(self, nickname):
+        """When a viewer leaves the room"""
         el = self.chatter_in.remove(nickname)
         if el is None:
             el = ChatterModelElement(nickname, datetime.now())
@@ -81,9 +78,9 @@ class QtApp:
         The source is the running bot and the destination can be setup in the Settings file.
         """
         if getattr(sys, 'frozen', False):
-            bot_sound_dir = Path(os.path.dirname(sys.executable)) / ".." / "data" / "sound"
+            bot_sound_dir = Path(os.path.dirname(sys.executable)) / ".." / "data" / "sounds"
         elif __file__:
-            bot_sound_dir = Path(os.path.dirname(__file__)) / ".." / "data" / "sound"
+            bot_sound_dir = Path(os.path.dirname(__file__)) / ".." / "data" / "sounds"
 
         from bot.bot import Bot
         blog_root = Path(Bot().config["GUI"].get("blog_path", "C:/"))

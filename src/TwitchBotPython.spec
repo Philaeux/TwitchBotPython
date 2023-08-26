@@ -11,7 +11,8 @@ a = Analysis(
     datas=[
         ("bot/alembic/env.py", "alembic"),
         ("bot/alembic/versions/*", "alembic/versions"),
-        ("alembic.ini", ".")],
+        ("alembic.ini", "."),
+        ("bot/data/sounds", "sounds")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

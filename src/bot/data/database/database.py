@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 
 from bot.data.database.entity_base import BaseEntity
 from bot.data.database.entity_key_value import KeyValueEntity
+from bot.data.database.entity_viewer import ViewerEntity
 
 
 class Database:

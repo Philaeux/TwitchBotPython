@@ -25,9 +25,9 @@ class SoundProcessor:
         self.sound_dictionary = {}
         self.last_sound_load = time.time() - 2*self.MAX_RELOAD_FREQUENCY
         if getattr(sys, 'frozen', False):
-            self.sound_path = os.path.join(os.path.dirname(sys.executable), "data", "sound")
+            self.sound_path = os.path.join(os.path.dirname(sys.executable), "sounds")
         elif __file__:
-            self.sound_path = os.path.join(os.path.dirname(__file__), "..", "data", "sound")
+            self.sound_path = os.path.join(os.path.dirname(__file__), "..", "data", "sounds")
         self.reload_sound_map()
 
         # Add handler
