@@ -23,7 +23,7 @@ class ChatterModel(QAbstractTableModel):
             elif index.column() == 2:
                 return el.nickname
         elif role == Qt.ItemDataRole.TextAlignmentRole:
-            if index.column() == 0 or (index == 1 and self.display_left):
+            if index.column() == 0 or (index.column() == 1 and self.display_left):
                 return Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
             else:
                 return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
@@ -43,18 +43,27 @@ class ChatterModel(QAbstractTableModel):
                 return
 
         self.chatters.append(cme)
-        self.chatters.sort(key=lambda x: x.nickname)
+        if self.display_left:
+            self.chatters.sort(key=lambda x: x.ts_left, reverse=True)
+        else:
+            self.chatters.sort(key=lambda x: x.nickname)
         self.layoutChanged.emit()
 
     def remove(self, nickname):
         for index, element in enumerate(self.chatters):
             if element.nickname == nickname:
-                el = self.chatters.pop(index)
-                self.chatters.sort(key=lambda x: x.nickname)
-                self.layoutChanged.emit()
-                return el
+                return self.remove_at_index(index)
 
         return None
+
+    def remove_at_index(self, index):
+        el = self.chatters.pop(index)
+        if self.display_left:
+            self.chatters.sort(key=lambda x: x.ts_left, reverse=True)
+        else:
+            self.chatters.sort(key=lambda x: x.nickname)
+        self.layoutChanged.emit()
+        return el
 
 
 class ChatterModelElement:

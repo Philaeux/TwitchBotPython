@@ -6,14 +6,12 @@ class Strategy:
 
     def __init__(self, bot):
         self.bot = bot
+
         self.message_handlers = []
         self.command_handlers = {}
-        self.reward_handlers = {}
+        self.reward_handlers = []
 
-        self.sound_processor = None
-
-    def init_processors(self):
-        self.sound_processor = SoundProcessor(self.bot)
+        self.sound_processor = SoundProcessor(self.bot, self)
 
     def on_message(self, sender, is_admin, is_sub, message):
         print("message s:{} a:{} s:{} m:{}".format(sender, is_admin, is_sub, message))
@@ -30,8 +28,5 @@ class Strategy:
 
     def on_reward(self, sender, is_admin, is_sub, reward_id, message):
         print("reward s:{} a:{} s:{} r:{} m:{}".format(sender, is_admin, is_sub, reward_id, message))
-        handler = self.reward_handlers.get(reward_id, None)
-        if handler is None:
-            return
-        else:
-            handler(sender, is_admin, is_sub, message)
+        for handler in self.reward_handlers:
+            handler(sender, is_admin, is_sub, reward_id, message)

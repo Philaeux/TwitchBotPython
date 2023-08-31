@@ -9,16 +9,11 @@ class SoundProcessor:
 
     Attributes:
         bot: master bot
-        sound_reward_id: reward id linked to playing sounds
         sound_dictionary: dict of all key-files associations
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot, strategy):
         self.bot = bot
-        if not self.bot.config['STRATEGY_SOUND'].get("enabled", False):
-            return
-
-        self.sound_reward_id = self.bot.config['STRATEGY_SOUND'].get("reward_id", "000")
 
         # Load sounds
         self.MAX_RELOAD_FREQUENCY = 60
@@ -31,7 +26,7 @@ class SoundProcessor:
         self.reload_sound_map()
 
         # Add handler
-        self.bot.strategy.reward_handlers[self.sound_reward_id] = self.on_sound_request
+        strategy.reward_handlers.append(self.on_reward)
         
     def reload_sound_map(self):
         if time.time() > self.last_sound_load + self.MAX_RELOAD_FREQUENCY:
@@ -41,7 +36,10 @@ class SoundProcessor:
                 for sound_file in [f for f in filenames if f.endswith(".opus")]:
                     self.sound_dictionary[sound_file[:-5]] = os.path.join(dir_path, sound_file)
 
-    def on_sound_request(self, sender, is_admin, is_sub, message):
+    def on_reward(self, sender, is_admin, is_sub, reward_id, message):
+        if reward_id != self.bot.settings.sound_reward_id:
+            return
+
         lower_message = message.lower()
         lower_message = lower_message.replace("’", "'")
         lower_message = lower_message.replace(" ", "_")

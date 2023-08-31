@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from bot.data.database.entity_base import BaseEntity
-from bot.data.database.entity_key_value import KeyValueEntity
+from bot.data.database.entity_settings import SettingsEntity
 from bot.data.database.entity_viewer import ViewerEntity
 
 # this is the Alembic Config object, which provides

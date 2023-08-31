@@ -7,7 +7,8 @@ import sys
 from sqlalchemy.orm import Session
 
 from bot.data.database.database import Database
-from bot.data.settings import Settings
+
+from bot.data.database.entity_settings import SettingsEntity
 from bot.ui.qt_app import QtApp
 from bot.irc_client import IrcClient
 from bot.strategy import Strategy
@@ -29,7 +30,6 @@ class Bot(metaclass=Singleton):
     """The Master class for the bot, owning all modules.
 
     Attributes:
-        config: bot ConfigParser configuration
         database: database client
         irc: irc thread
         qt: qt gui thread
@@ -37,28 +37,20 @@ class Bot(metaclass=Singleton):
     """
 
     def __init__(self) -> None:
-        self.config = ConfigParser()
-        try:
-            if getattr(sys, 'frozen', False):
-                application_path = os.path.dirname(sys.executable)
-            elif __file__:
-                application_path = os.path.dirname(__file__)
-            self.config.read(os.path.join(application_path, 'settings.ini'))
-        except Exception:
-            print('Impossible to load settings.ini config. ', 'Check configuration format.')
-            exit(1)
 
         self.database = Database()
-        self.settings = Settings()
         with Session(self.database.engine) as session:
-            self.settings.import_from_database(session)
+            session.expire_on_commit = False
+            self.settings = session.get(SettingsEntity, "default")
+            if self.settings is None:
+                self.settings = SettingsEntity("default")
+                session.add(self.settings)
+                session.commit()
             session.commit()
 
         self.strategy = Strategy(self)
         self.irc = IrcClient(self)
         self.qt = QtApp(self)
-
-        self.strategy.init_processors()
 
     def run(self):
         """Start all independent modules."""

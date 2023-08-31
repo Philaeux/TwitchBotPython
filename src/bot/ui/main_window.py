@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PySide6.QtCore import Signal, QUrl
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtWidgets import QMainWindow
@@ -11,10 +13,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     play_signal = Signal(bool)
     chatter_join = Signal(str)
     chatter_left = Signal(str)
+    connection_changed = Signal(str)
+    heartbeat_received = Signal()
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.draw_connection_status("Try")
+        self.chatter_join.connect(lambda x: self.on_heartbeat())
+        self.connection_changed.connect(self.draw_connection_status)
+        self.heartbeat_received.connect(self.on_heartbeat)
 
         # Create media player elements
         self.player = QMediaPlayer()
@@ -56,3 +64,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         elif self.player.position() + 24 == self.player.duration():
             self.player.stop()
+
+    def draw_connection_status(self, status) -> None:
+        self.heartbeat_received.emit()
+
+        self.labelConnectionOn.setVisible(status == "On")
+        self.labelConnectionOff.setVisible(status == "Off")
+        self.labelConnectionTry.setVisible(status == "Try")
+
+        self.buttonConnect.setEnabled(status == "Off")
+        self.buttonDisconnect.setEnabled(status != "Off")
+
+    def on_heartbeat(self):
+        self.labelHeartbeat.setText(datetime.now().strftime("%H:%M:%S"))
