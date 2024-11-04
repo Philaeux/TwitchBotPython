@@ -1,4 +1,0 @@
-irc
-SQLAlchemy
-Alembic
-PySide6

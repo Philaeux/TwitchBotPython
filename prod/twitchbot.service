@@ -1,9 +1,0 @@
-[Unit]
-Description=BotName
-
-[Service]
-Type=simple
-ExecStart=/<PATH TO FOLDER>/src/.venv/bin/python /<PATH TO FOLDER>/src/app.py
-
-[Install]
-WantedBy=multi-user.target

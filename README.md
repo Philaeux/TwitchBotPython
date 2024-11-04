@@ -1,18 +1,13 @@
 # GrenouilleBot
 Twitch chat (IRC) bot giving additional streaming features.
 
-## Development commands
-`(system)` is either `win` or `unix`.
-- `make (system)-install` - create the python virtual environment.
-- `make (system)-run` - start the bot.
+## Run
 
-- `make (system)-db-upgrade` - update the database (run all migrations).
-- `make (system)-db-downgrade` - downgrade the database (one version).
-- `make (system)-db-migrate` - generate migration from models.
-
-## Production setup on UNIX server
-Set up a `systemd` service by creating a file similar to `prod/twitchbot.service` into `/etc/systemd/system/`.  
-CHMOD it to 644. Remember to edit the application configuration.  
+```
+poetry install
+cd src
+poetry run python main.py
+```
 
 ## Configuration
 The bot loads the configuration from `settings.ini`.  

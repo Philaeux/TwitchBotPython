@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "twitchbotpython"
+version = "0.1.0"
+description = "Chat bot for Twitch Stream."
+authors = ["Vincent 'Philaeux' LAMOTTE <vinc.lamotte@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "<3.13,>=3.9"
+irc = "^20.5.0"
+sqlalchemy = "^2.0.35"
+alembic = "^1.13.3"
+pyside6 = "^6.7.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
