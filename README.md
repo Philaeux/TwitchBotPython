@@ -4,9 +4,8 @@ Twitch chat (IRC) bot giving additional streaming features.
 ## Run
 
 ```
-poetry install
 cd src
-poetry run python main.py
+uv run python main.py
 ```
 
 ## Configuration
