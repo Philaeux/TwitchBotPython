@@ -4,7 +4,7 @@ from PySide6.QtCore import Signal, QUrl
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtWidgets import QMainWindow
 
-from bot.ui.ui_main_window import Ui_MainWindow
+from twitch_bot.ui.ui_main_window import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -14,15 +14,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     chatter_join = Signal(str)
     chatter_left = Signal(str)
     connection_changed = Signal(str)
-    heartbeat_received = Signal()
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.draw_connection_status("Try")
-        self.chatter_join.connect(lambda x: self.on_heartbeat())
+
         self.connection_changed.connect(self.draw_connection_status)
-        self.heartbeat_received.connect(self.on_heartbeat)
+        self.draw_connection_status("OFF")
+
+        self.chatter_join.connect(self.on_heartbeat)
+        self.chatter_left.connect(self.on_heartbeat)
+        self.chatter_join.connect(self.on_heartbeat)
 
         # Create media player elements
         self.player = QMediaPlayer()
@@ -68,11 +70,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def draw_connection_status(self, status) -> None:
         self.heartbeat_received.emit()
 
-        self.labelConnectionOn.setVisible(status == "On")
-        self.labelConnectionOff.setVisible(status == "Off")
-        self.labelConnectionTry.setVisible(status == "Try")
+        self.labelConnectionOn.setVisible(status in ["ON"])
+        self.labelConnectionOff.setVisible(status in ["OFF"])
+        self.labelConnectionTry.setVisible(status in ["TRY"])
 
-        self.buttonConnect.setEnabled(status == "Off")
         self.buttonDisconnect.setEnabled(status != "Off")
 
     def on_heartbeat(self):

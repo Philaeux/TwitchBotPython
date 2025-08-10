@@ -2,11 +2,8 @@
 .venv
 .wvenv
 
-src/bot/ui/resources_rc.py
-src/bot/ui/ui_main_window.py
-
-src/bot/settings.ini
-src/bot/data/database/sqlite.db
+src/twitch_bot/settings.ini
+src/sqlite.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

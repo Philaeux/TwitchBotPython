@@ -1,6 +1,6 @@
 from sqlalchemy.orm import DeclarativeBase
 
 
-class BaseEntity(DeclarativeBase):
+class Base(DeclarativeBase):
     """Database model base class"""
     pass

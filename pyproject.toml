@@ -1,12 +1,19 @@
 [project]
-name = "twitchbotpython"
+name = "twitch_bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "Bot for my personal usage."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "aiohttp>=3.12.15",
     "alembic>=1.16.4",
+    "fastapi>=0.116.1",
     "irc>=20.5.0",
     "pyside6>=6.9.1",
+    "requests>=2.32.4",
     "sqlalchemy>=2.0.41",
+    "websockets>=15.0.1",
 ]
+
+[tool.uv]
+package = true
