@@ -15,16 +15,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     chatter_left = Signal(str)
     connection_changed = Signal(str)
 
-    def __init__(self):
+    def __init__(self, bot):
         super().__init__()
         self.setupUi(self)
+        self.bot = bot
 
         self.connection_changed.connect(self.draw_connection_status)
         self.draw_connection_status("OFF")
 
+        self.actionSettings.triggered.connect(self.on_open_settings)
+        self.buttonSettingsCancel.clicked.connect(self.on_settings_cancel)
+
         self.chatter_join.connect(self.on_heartbeat)
         self.chatter_left.connect(self.on_heartbeat)
-        self.chatter_join.connect(self.on_heartbeat)
+        self.play_signal.connect(self.on_heartbeat)
 
         # Create media player elements
         self.player = QMediaPlayer()
@@ -38,6 +42,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.centralStackedWidget.setCurrentIndex(0)
 
+    def on_open_settings(self):
+        """User opens settings tab"""
+        self.lineEditClientID.setText(self.bot.settings.client_id)
+        self.lineEditClientSecret.setText(self.bot.settings.client_secret)
+        self.lineEditChannel.setText(self.bot.settings.channel)
+        self.lineEditSoundRewardId.setText(self.bot.settings.sound_reward_id)
+        self.lineEditBlogExportPath.setText(self.bot.settings.blog_export_path)
+        self.centralStackedWidget.setCurrentIndex(1)
+
+    def on_settings_cancel(self):
+        """User cancels settings modifications"""
+        self.centralStackedWidget.setCurrentIndex(0)
+
     def play(self) -> None:
         """Start a sound play if the player is ready and there is a sound request in the queue"""
         if self.player.playbackState() == QMediaPlayer.PlaybackState.StoppedState and len(self.player_playlist) != 0:
@@ -47,11 +64,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.player.play()
 
     def queue_sound(self, sound_id: str) -> None:
-        """Queue a sound to play
-
-        Args:
-            sound_id: id of the sound to play
-        """
+        """Queue a sound to play"""
         self.player_playlist.append(sound_id)
         self.play_signal.emit(True)
 
@@ -68,13 +81,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.player.stop()
 
     def draw_connection_status(self, status) -> None:
-        self.heartbeat_received.emit()
-
         self.labelConnectionOn.setVisible(status in ["ON"])
         self.labelConnectionOff.setVisible(status in ["OFF"])
         self.labelConnectionTry.setVisible(status in ["TRY"])
 
-        self.buttonDisconnect.setEnabled(status != "Off")
+        self.buttonDisconnect.setEnabled(status != "OFF")
 
     def on_heartbeat(self):
         self.labelHeartbeat.setText(datetime.now().strftime("%H:%M:%S"))

@@ -82,6 +82,7 @@ class TwitchChatListener(QThread):
                                 json=payload) as resp:
             data = await resp.json()
             logging.info("- Subscription faite")
+            self.bot.qt_window.connection_changed.emit("ON")
 
     async def get_client_access_token(self):
         logging.info("Getting client access token")
@@ -127,7 +128,7 @@ class TwitchChatListener(QThread):
             "Content-Type": "application/json"
         }
         params = {
-            "login": "philaeux"
+            "login": self.bot.settings.channel
         }
 
         async with aiohttp.ClientSession() as session:

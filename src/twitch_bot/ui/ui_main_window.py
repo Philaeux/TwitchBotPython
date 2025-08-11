@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplicat
     QLineEdit, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
     QStatusBar, QTableView, QVBoxLayout, QWidget)
-import resources_rc
+from . import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -46,18 +46,6 @@ class Ui_MainWindow(object):
         self.grid.setObjectName(u"grid")
         self.gridLayout = QGridLayout(self.grid)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_2 = QLabel(self.grid)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.gridLayout.addWidget(self.label_2, 1, 1, 1, 1)
-
-        self.label = QLabel(self.grid)
-        self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-
         self.tableViewOut = QTableView(self.grid)
         self.tableViewOut.setObjectName(u"tableViewOut")
         self.tableViewOut.setMinimumSize(QSize(420, 0))
@@ -97,11 +85,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.tableViewHidden, 2, 2, 1, 1)
 
-        self.label_12 = QLabel(self.grid)
-        self.label_12.setObjectName(u"label_12")
-        self.label_12.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label = QLabel(self.grid)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.gridLayout.addWidget(self.label_12, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
 
         self.horizontalWidget = QWidget(self.grid)
         self.horizontalWidget.setObjectName(u"horizontalWidget")
@@ -169,6 +157,18 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.horizontalWidget, 0, 0, 1, 3)
 
+        self.label_12 = QLabel(self.grid)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout.addWidget(self.label_12, 1, 2, 1, 1)
+
+        self.label_2 = QLabel(self.grid)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout.addWidget(self.label_2, 1, 1, 1, 1)
+
 
         self.verticalLayout_2.addWidget(self.grid)
 
@@ -179,124 +179,140 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.gridWidget = QWidget(self.page_2)
         self.gridWidget.setObjectName(u"gridWidget")
-        self.gridLayout_3 = QGridLayout(self.gridWidget)
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.label_10 = QLabel(self.gridWidget)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout_3.addWidget(self.label_10, 4, 0, 1, 1)
-
-        self.lineEditBlogExportPath = QLineEdit(self.gridWidget)
-        self.lineEditBlogExportPath.setObjectName(u"lineEditBlogExportPath")
-
-        self.gridLayout_3.addWidget(self.lineEditBlogExportPath, 4, 1, 1, 1)
-
+        self.verticalLayout_4 = QVBoxLayout(self.gridWidget)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_3 = QLabel(self.gridWidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.gridLayout_3.addWidget(self.label_3, 0, 0, 1, 1)
+        self.horizontalLayout_4.addWidget(self.label_3)
 
         self.lineEditClientID = QLineEdit(self.gridWidget)
         self.lineEditClientID.setObjectName(u"lineEditClientID")
 
-        self.gridLayout_3.addWidget(self.lineEditClientID, 0, 1, 1, 1)
+        self.horizontalLayout_4.addWidget(self.lineEditClientID)
 
         self.label_4 = QLabel(self.gridWidget)
         self.label_4.setObjectName(u"label_4")
 
-        self.gridLayout_3.addWidget(self.label_4, 0, 2, 1, 1)
+        self.horizontalLayout_4.addWidget(self.label_4)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_4)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_5 = QLabel(self.gridWidget)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.label_5)
 
         self.lineEditClientSecret = QLineEdit(self.gridWidget)
         self.lineEditClientSecret.setObjectName(u"lineEditClientSecret")
         self.lineEditClientSecret.setEchoMode(QLineEdit.EchoMode.Password)
 
-        self.gridLayout_3.addWidget(self.lineEditClientSecret, 1, 1, 1, 1)
-
-        self.label_5 = QLabel(self.gridWidget)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout_3.addWidget(self.label_5, 1, 0, 1, 1)
-
-        self.label_9 = QLabel(self.gridWidget)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout_3.addWidget(self.label_9, 3, 0, 1, 1)
+        self.horizontalLayout_5.addWidget(self.lineEditClientSecret)
 
         self.label_6 = QLabel(self.gridWidget)
         self.label_6.setObjectName(u"label_6")
 
-        self.gridLayout_3.addWidget(self.label_6, 1, 2, 1, 1)
-
-        self.label_8 = QLabel(self.gridWidget)
-        self.label_8.setObjectName(u"label_8")
-
-        self.gridLayout_3.addWidget(self.label_8, 2, 2, 1, 1)
-
-        self.horizontalWidgetSettingsButtons = QWidget(self.gridWidget)
-        self.horizontalWidgetSettingsButtons.setObjectName(u"horizontalWidgetSettingsButtons")
-        self.horizontalLayout_3 = QHBoxLayout(self.horizontalWidgetSettingsButtons)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
-
-        self.buttonSettingsSave = QPushButton(self.horizontalWidgetSettingsButtons)
-        self.buttonSettingsSave.setObjectName(u"buttonSettingsSave")
-
-        self.horizontalLayout_3.addWidget(self.buttonSettingsSave)
-
-        self.buttonSettingsCancel = QPushButton(self.horizontalWidgetSettingsButtons)
-        self.buttonSettingsCancel.setObjectName(u"buttonSettingsCancel")
-
-        self.horizontalLayout_3.addWidget(self.buttonSettingsCancel)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_4)
+        self.horizontalLayout_5.addWidget(self.label_6)
 
 
-        self.gridLayout_3.addWidget(self.horizontalWidgetSettingsButtons, 5, 0, 1, 3)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_5)
 
-        self.lineEditSoundRewardId = QLineEdit(self.gridWidget)
-        self.lineEditSoundRewardId.setObjectName(u"lineEditSoundRewardId")
-
-        self.gridLayout_3.addWidget(self.lineEditSoundRewardId, 3, 1, 1, 1)
-
-        self.horizontalWidgetSettingsReward = QWidget(self.gridWidget)
-        self.horizontalWidgetSettingsReward.setObjectName(u"horizontalWidgetSettingsReward")
-        self.horizontalLayout_2 = QHBoxLayout(self.horizontalWidgetSettingsReward)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_11 = QLabel(self.horizontalWidgetSettingsReward)
-        self.label_11.setObjectName(u"label_11")
-
-        self.horizontalLayout_2.addWidget(self.label_11)
-
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_2.addItem(self.horizontalSpacer_5)
-
-        self.buttonSettingsReward = QPushButton(self.horizontalWidgetSettingsReward)
-        self.buttonSettingsReward.setObjectName(u"buttonSettingsReward")
-
-        self.horizontalLayout_2.addWidget(self.buttonSettingsReward)
-
-
-        self.gridLayout_3.addWidget(self.horizontalWidgetSettingsReward, 3, 2, 1, 1)
-
-        self.lineEditChannel = QLineEdit(self.gridWidget)
-        self.lineEditChannel.setObjectName(u"lineEditChannel")
-
-        self.gridLayout_3.addWidget(self.lineEditChannel, 2, 1, 1, 1)
-
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_7 = QLabel(self.gridWidget)
         self.label_7.setObjectName(u"label_7")
         self.label_7.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.gridLayout_3.addWidget(self.label_7, 2, 0, 1, 1)
+        self.horizontalLayout_6.addWidget(self.label_7)
+
+        self.lineEditChannel = QLineEdit(self.gridWidget)
+        self.lineEditChannel.setObjectName(u"lineEditChannel")
+
+        self.horizontalLayout_6.addWidget(self.lineEditChannel)
+
+        self.label_8 = QLabel(self.gridWidget)
+        self.label_8.setObjectName(u"label_8")
+
+        self.horizontalLayout_6.addWidget(self.label_8)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_6)
+
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.label_9 = QLabel(self.gridWidget)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_7.addWidget(self.label_9)
+
+        self.lineEditSoundRewardId = QLineEdit(self.gridWidget)
+        self.lineEditSoundRewardId.setObjectName(u"lineEditSoundRewardId")
+
+        self.horizontalLayout_7.addWidget(self.lineEditSoundRewardId)
+
+        self.label_11 = QLabel(self.gridWidget)
+        self.label_11.setObjectName(u"label_11")
+
+        self.horizontalLayout_7.addWidget(self.label_11)
+
+        self.buttonSettingsReward = QPushButton(self.gridWidget)
+        self.buttonSettingsReward.setObjectName(u"buttonSettingsReward")
+
+        self.horizontalLayout_7.addWidget(self.buttonSettingsReward)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_7)
+
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.label_10 = QLabel(self.gridWidget)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_8.addWidget(self.label_10)
+
+        self.lineEditBlogExportPath = QLineEdit(self.gridWidget)
+        self.lineEditBlogExportPath.setObjectName(u"lineEditBlogExportPath")
+
+        self.horizontalLayout_8.addWidget(self.lineEditBlogExportPath)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_8)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_9.addItem(self.horizontalSpacer_4)
+
+        self.buttonSettingsSave = QPushButton(self.gridWidget)
+        self.buttonSettingsSave.setObjectName(u"buttonSettingsSave")
+
+        self.horizontalLayout_9.addWidget(self.buttonSettingsSave)
+
+        self.buttonSettingsCancel = QPushButton(self.gridWidget)
+        self.buttonSettingsCancel.setObjectName(u"buttonSettingsCancel")
+
+        self.horizontalLayout_9.addWidget(self.buttonSettingsCancel)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_9.addItem(self.horizontalSpacer_3)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_9)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer)
 
 
         self.verticalLayout_3.addWidget(self.gridWidget)
@@ -333,9 +349,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"TwitchBotPython", None))
         self.actionSettings.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Chatters Out</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Chatters In</span></p></body></html>", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Hidden</span></p></body></html>", None))
         self.labelHeartbeat.setText("")
         self.labelConnectionOn.setText("")
         self.labelConnectionTry.setText("")
@@ -343,18 +357,20 @@ class Ui_MainWindow(object):
         self.oauth_button.setText(QCoreApplication.translate("MainWindow", u"Start OAuth", None))
         self.buttonDisconnect.setText(QCoreApplication.translate("MainWindow", u"Disconnect", None))
         self.buttonGenerate.setText(QCoreApplication.translate("MainWindow", u"Generate Blog Files", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Blog Export Path</span></p></body></html>", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Hidden</span></p></body></html>", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Chatters Out</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Client ID</span></p></body></html>", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Bot Client ID, get one <a href=\"https://dev.twitch.tv/console/apps\"><span style=\" text-decoration: underline; color:#99ebff;\">in the twitch console.</span></a></p></body></html>", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Client Secret</span></p></body></html>", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Sound Reward ID</span></p></body></html>", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Associated Client Secret.</p></body></html>", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Twitch Channel</span></p></body></html>", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Chat to listen to.", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Sound Reward ID</span></p></body></html>", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Reward that activate the soundboard.", None))
+        self.buttonSettingsReward.setText(QCoreApplication.translate("MainWindow", u"Extract ID of latest used Reward", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Blog Export Path</span></p></body></html>", None))
         self.buttonSettingsSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.buttonSettingsCancel.setText(QCoreApplication.translate("MainWindow", u"Cancel", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Reward that activate the soundboard.", None))
-        self.buttonSettingsReward.setText(QCoreApplication.translate("MainWindow", u"Extract ID of latest used Rewward", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Twitch Channel</span></p></body></html>", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

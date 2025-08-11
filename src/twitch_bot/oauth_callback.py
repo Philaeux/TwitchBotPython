@@ -5,7 +5,7 @@ from PySide6.QtCore import QThread, Signal
 
 
 class OAuthHandler(BaseHTTPRequestHandler):
-    """Serveur web minimal."""
+    """Minimal web server."""
 
     oauth_code = None
 
@@ -16,14 +16,14 @@ class OAuthHandler(BaseHTTPRequestHandler):
             OAuthHandler.oauth_code = params["code"][0]
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(b"Authentification terminee. Vous pouvez fermer cette page.")
+            self.wfile.write(b"Auth completed. You can close this page.")
         else:
             self.send_response(400)
             self.end_headers()
 
 
 class OauthCallback(QThread):
-    """Thread QT qui écoute le retour de l'OAuth."""
+    """QT Thread listening for OAuth callback."""
 
     oauth_code = Signal(str)
 

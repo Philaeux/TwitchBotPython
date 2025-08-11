@@ -43,22 +43,21 @@ class Bot:
                 session.add(self.settings)
                 session.commit()
             session.commit()
+        self.last_claimed_reward = None
 
         # Qt App
         self.qt_app = QApplication(sys.argv)
-        self.qt_window = MainWindow()
+        self.qt_window = MainWindow(self)
 
         # Signals / Connect
         self.qt_window.oauth_button.clicked.connect(self.start_oauth_process)
-
-        self.qt_window.actionSettings.triggered.connect(self.on_open_settings)
         self.qt_window.actionExit.triggered.connect(self.qt_window.close)
+
         self.qt_window.chatter_join.connect(self.on_chatter_join)
         self.qt_window.chatter_left.connect(self.on_chatter_left)
+
         self.qt_window.buttonSettingsReward.clicked.connect(self.on_settings_reward)
         self.qt_window.buttonSettingsSave.clicked.connect(self.on_settings_save)
-        self.qt_window.buttonSettingsCancel.clicked.connect(self.on_settings_cancel)
-        self.qt_window.buttonConnect.clicked.connect(self.on_connect_irc)
         self.qt_window.buttonGenerate.clicked.connect(self.compute_blog_files)
 
         self.chatter_in = ChatterModel()
@@ -95,6 +94,7 @@ class Bot:
 
     def start_oauth_process(self):
         """Open browser for streamer to login"""
+        self.qt_window.connection_changed.emit("TRY")
         self.oauth_callback.start()
         params = {
             "client_id": self.settings.client_id,
@@ -115,52 +115,29 @@ class Bot:
 
     def on_reward_message(self, reward_id, user, message):
         logging.info(f"{reward_id} from {user}: {message}")
+        self.last_claimed_reward = reward_id
         self.sound_processor.process_sound(message)
 
-    def update_settings(self, irc_nickname, irc_token, irc_channel, sound_reward_id, bloc_export_path):
-        with Session(self.engine) as session:
-            self.settings = session.merge(self.settings)
-            self.settings.irc_nickname = irc_nickname
-            self.settings.irc_token = irc_token
-            self.settings.irc_channel = irc_channel
-            self.settings.sound_reward_id = sound_reward_id
-            self.settings.blog_export_path = bloc_export_path
-            session.commit()
-
     def on_settings_reward(self):
-        if self.irc.last_claimed_reward is not None:
-            self.qt_window.lineEditSoundRewardId.setText(self.irc.last_claimed_reward)
-
-    def on_open_settings(self):
-        """User opens settings tab"""
-        self.qt_window.lineEditIrcNickname.setText(self.settings.irc_nickname)
-        self.qt_window.lineEditIrcToken.setText(self.settings.irc_token)
-        self.qt_window.lineEditIrcChannel.setText(self.settings.irc_channel)
-        self.qt_window.lineEditSoundRewardId.setText(self.settings.sound_reward_id)
-        self.qt_window.lineEditBlogExportPath.setText(self.settings.blog_export_path)
-        self.qt_window.centralStackedWidget.setCurrentIndex(1)
+        if self.last_claimed_reward is not None:
+            self.qt_window.lineEditSoundRewardId.setText(self.last_claimed_reward)
 
     def on_settings_save(self):
         """User saves settings modifications"""
-        self.update_settings(self.qt_window.lineEditIrcNickname.text(),
-                             self.qt_window.lineEditIrcToken.text(),
-                             self.qt_window.lineEditIrcChannel.text(),
-                             self.qt_window.lineEditSoundRewardId.text(),
-                             self.qt_window.lineEditBlogExportPath.text())
+        with Session(self.engine, expire_on_commit=False) as session:
+            self.settings = session.merge(self.settings)
+            self.settings.client_id = self.qt_window.lineEditClientID.text()
+            self.settings.client_secret = self.qt_window.lineEditClientSecret.text()
+            self.settings.channel = self.qt_window.lineEditChannel.text()
+            self.settings.sound_reward_id = self.qt_window.lineEditSoundRewardId.text()
+            self.settings.blog_export_path = self.qt_window.lineEditBlogExportPath.text()
+            session.commit()
         self.qt_window.centralStackedWidget.setCurrentIndex(0)
-
-    def on_settings_cancel(self):
-        """User cancels settings modifications"""
-        self.qt_window.centralStackedWidget.setCurrentIndex(0)
-
-    def on_connect_irc(self):
-        self.qt_window.draw_connection_status("Try")
-        self.irc.connection.reconnect()
 
     def on_chatter_join(self, nickname):
         """When a new viewer enter the room"""
         self.chatter_out.remove(nickname)
-        with Session(self.database.engine) as session:
+        with Session(self.engine) as session:
             viewer = session.get(Viewer, nickname)
             if viewer is not None and viewer.hide_tracking:
                 self.chatter_hidden.add(ChatterModelElement(nickname, datetime.now()))
@@ -172,7 +149,7 @@ class Bot:
         el = self.chatter_in.remove(nickname)
         self.chatter_hidden.remove(nickname)
 
-        with Session(self.database.engine) as session:
+        with Session(self.engine) as session:
             viewer = session.get(Viewer, nickname)
             if viewer is None or viewer.hide_tracking:
                 if el is None:
@@ -189,7 +166,7 @@ class Bot:
             else:
                 self.chatter_in.add(el)
 
-        with Session(self.database.engine) as session:
+        with Session(self.engine) as session:
             viewer = session.get(Viewer, el.nickname)
             if viewer is None:
                 viewer = Viewer(el.nickname, hide)
