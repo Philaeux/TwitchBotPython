@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import shutil
@@ -181,14 +182,14 @@ class Bot:
         The source is the running bot and the destination can be setup in the Settings file.
         """
         if getattr(sys, 'frozen', False):
-            bot_sound_dir = Path(os.path.dirname(sys.executable)) / ".." / "data" / "sounds"
+            bot_sound_dir = Path(os.path.dirname(sys.executable)) / "sounds"
         else:
-            bot_sound_dir = Path(os.path.dirname(__file__)) / ".." / "data" / "sounds"
+            bot_sound_dir = Path(os.path.dirname(__file__)) / "processor_sounds" / "sounds"
 
         blog_root = Path(self.settings.blog_export_path)
 
-        blog_list_file = blog_root / "sounds.md"
-        blog_sound_dir = blog_root / "assets" / "sounds"
+        blog_list_file = blog_root / "pblog" / "src" / "app" / "pages" / "sounds" / "sounds.json"
+        blog_sound_dir = blog_root / "pblog" / "public" / "static" / "sounds"
 
         # Copy all sounds file to blog
         if blog_sound_dir.exists():
@@ -198,34 +199,19 @@ class Bot:
         # Generate new blog files
         if blog_list_file.exists():
             blog_list_file.unlink()
-        with open(blog_list_file, "a") as file_descriptor:
-            file_descriptor.write("---\n")
-            file_descriptor.write("layout: post\n")
-            file_descriptor.write("title: Sounds available in Stream\n")
-            file_descriptor.write("---\n")
-            file_descriptor.write("Use the name to start a sound as a message of the \"Play Sound\" reward. \n")
-            file_descriptor.write("\n")
-
-            # Navigation Table
-            for root, dirs, files in os.walk(bot_sound_dir, topdown=False):
-                if Path(root) == bot_sound_dir:
+        sound_files = {}
+        # All files
+        for root, dirs, files in os.walk(bot_sound_dir, topdown=False):
+            if Path(root) == bot_sound_dir:
+                continue
+            section = os.path.basename(Path(root))
+            if section not in sound_files:
+                sound_files[section] = []
+            for name in files:
+                if name[-5:] != ".opus":
                     continue
-                section = os.path.basename(Path(root))
-                section_pretty = section.replace("_", " ").title()
-                file_descriptor.write("* [" + section_pretty + "](#" + section + ")\n")
-            file_descriptor.write("\n")
-
-            # All files
-            for root, dirs, files in os.walk(bot_sound_dir, topdown=False):
-                if Path(root) == bot_sound_dir:
-                    continue
-                section = os.path.basename(Path(root))
-                section_pretty = section.replace("_", " ").title()
-                file_descriptor.write("\n### " + section_pretty + "  <a name=\"" + section + "\"></a>\n\n")
-                for name in files:
-                    if name[-5:] != ".opus":
-                        continue
-                    file_descriptor.write("* &nbsp; <audio controls preload=\"none\"><source src=\"\\assets\\sounds\\"
-                                          + section + "\\" + name + "\" type=\"audio/ogg; codecs=opus\"></audio>&nbsp; "
-                                          + name[:-5].replace("_", " ") + "\n")
-                file_descriptor.write("<a href=\"#\" class=\"backlogo\">&#x25B2;</a>\n")
+                sound_files[section].append(name[:-5])
+        json_output = {"list": []}
+        for section, files in sound_files.items():
+            json_output["list"].append({"name": section, "sounds": files})
+        json.dump(json_output, open(blog_list_file, "w"), indent=4)
